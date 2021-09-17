@@ -9,7 +9,7 @@ MongoDB, NodeJS & ExpressJS
 
 # getting started
 ```
-$ insert betterspace commands here
+$ commands here
 ```
 
 # installing
