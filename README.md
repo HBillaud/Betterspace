@@ -21,7 +21,7 @@ $ npm run dev
 ```
 
 # guide
-complete guide here: ![betterspace guide](https://google.com)
+complete guide here: [betterspace guide](https://google.com)
 
 # authors
 - Jackson McCluskey @jacksonmccluskey
