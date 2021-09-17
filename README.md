@@ -1,2 +1,2 @@
 # betterspace-backend
-![](betterspace.png)
+![](Betterspace.png)
