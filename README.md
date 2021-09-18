@@ -19,7 +19,7 @@ run these commands in your terminal:
 ```
 $ cd betterspace-backend
 $ npm install
-$ npm run dev
+$ npm start
 ```
 
 # guide
