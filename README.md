@@ -9,7 +9,9 @@ MongoDB, NodeJS & ExpressJS
 
 # getting started
 ```
-$ commands here
+$ git clone https://github.com/jacksonmccluskey/betterspace-backend.git
+$ Username for 'https://github.com': **YOUR_USERNAME**
+$ Password for 'https://**YOUR_USERNAME**@github.com': **YOUR_PERSONAL_ACCESS_TOKEN**
 ```
 
 # installing
