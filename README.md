@@ -17,7 +17,7 @@ $ Password for 'https://**YOUR_USERNAME**@github.com': **YOUR_PERSONAL_ACCESS_TO
 # installing
 run these commands in your terminal:
 ```
-$ cd betterspace-backend
+$ cd betterspace-backend/betterspace
 $ npm install
 $ npm start
 ```
