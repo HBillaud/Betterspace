@@ -5,8 +5,8 @@ export default {
      component: HomePage
 }
 export const Basic = () => (
-     <HomePage />
+     <HomePage courses={[]}/>
 )
 export const Second = () => (
-     <HomePage username="Julia" courses={['cs408','cs348','com217', 'soc100']} />
+     <HomePage name="Julia" courses={['cs408','cs348','com217', 'soc100']} />
 )
