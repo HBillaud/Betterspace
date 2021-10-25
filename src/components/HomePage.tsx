@@ -3,19 +3,20 @@ import CourseIcon from './CourseIcon';
 import { Grid, CircularProgress } from '@material-ui/core';
 import useStyles from './GridStyles';
 
-interface HomeProps {
-     username?: string;
-     courses?: string[];
-}
-const HomePage: FC<HomeProps> = ({ username="unknown", courses=[] }) => {
-    const classes = useStyles();
 
+const HomePage = (props: any) => {
+  console.log(props.location.state)
+    const name: string = props.location.state.name;
+    const courses: string[] = props.location.state.courses;
+    const classes = useStyles();
+    console.log(name,courses)
      return (
          <div>
-         <h3>
-             {username}'s courses
+           <button type="button">Add course</button>
+         <h3 style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+             {name ? name : "" }'s courses
          </h3>
-    {!courses.length ? <CircularProgress /> : (
+    {courses.length > 0 ? <CircularProgress /> : (
     <Grid  container alignItems="stretch" spacing={1}>
       {courses.map((course, index) => (
         <Grid key={index} item xs={12} sm={2} md={2}>

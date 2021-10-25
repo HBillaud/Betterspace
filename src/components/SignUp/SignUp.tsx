@@ -16,13 +16,30 @@ const SignUp = () => {
       password: password, 
     }) .then(function (response: any) {
       if (response.data.status === 200) {
-        history.push('/home')
+        history.push({
+          pathname: '/home',
+          state: {name: firstName, courses: []}
+        })
       } else {
         alert('Invalid information given')
       }
     }).catch((error) => {
       console.log(error)
+    }).then(async () => {
+      await axios.post(process.env.REACT_APP_SERVER + '/v1/users', {
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+      }).then(async function (response: any) {
+        if (response.data.status === 200) {
+          // do nothing
+        }
+        else {
+          alert('Invalid information given');
+        }
+      })
     })
+
   }
   return (
     <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
