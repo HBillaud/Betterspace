@@ -25,19 +25,6 @@ const SignUp = () => {
       }
     }).catch((error) => {
       console.log(error)
-    }).then(async () => {
-      await axios.post(process.env.REACT_APP_SERVER + '/v1/users', {
-        email: email,
-        firstName: firstName,
-        lastName: lastName,
-      }).then(async function (response: any) {
-        if (response.data.status === 200) {
-          // do nothing
-        }
-        else {
-          alert('Invalid information given');
-        }
-      })
     })
 
   }
