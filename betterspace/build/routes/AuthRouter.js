@@ -22,6 +22,9 @@ const router = (0, express_1.Router)();
  *          schema:
  *            $ref: '#/components/schemas/UserSchema'
  *          example:
+ *            _id: 0123456789
+ *            firstname: john
+ *            lastname: wick
  *            email: test.user@mail.com
  *            password: test_test
  *    responses:

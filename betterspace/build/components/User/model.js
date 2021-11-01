@@ -22,9 +22,11 @@ const mongoose_1 = require("mongoose");
  *        - email
  *        - name
  *      properties:
- *        id:
+ *        _id:
  *          type: string
- *        name:
+ *        firstname:
+ *          type: string
+ *        lastname:
  *          type: string
  *        email:
  *          type: string
@@ -43,8 +45,22 @@ const mongoose_1 = require("mongoose");
  *        $ref: '#/components/schemas/UserSchema'
  */
 const UserSchema = new mongoose_1.Schema({
+    _id: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    firstname: {
+        type: String,
+        required: true
+    },
+    lastname: {
+        type: String,
+        required: true
+    },
     email: {
         type: String,
+        required: true,
         unique: true,
         trim: true
     },
@@ -52,8 +68,9 @@ const UserSchema = new mongoose_1.Schema({
     passwordResetToken: String,
     passwordResetExpires: Date,
     tokens: Array,
+    courses: Array
 }, {
-    collection: 'usermodel',
+    collection: 'student',
     versionKey: false
 }).pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function* () {

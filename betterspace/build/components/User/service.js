@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
 const validation_1 = require("./validation");
-const mongoose_1 = require("mongoose");
 /**
  * @export
  * @implements {IUserModelService}
@@ -46,7 +45,7 @@ const UserService = {
                     throw new Error(validate.error.message);
                 }
                 return yield model_1.default.findOne({
-                    _id: new mongoose_1.Types.ObjectId(id)
+                    _id: id
                 });
             }
             catch (error) {
@@ -89,7 +88,7 @@ const UserService = {
                     throw new Error(validate.error.message);
                 }
                 const user = yield model_1.default.findOneAndRemove({
-                    _id: new mongoose_1.Types.ObjectId(id)
+                    _id: id
                 });
                 return user;
             }

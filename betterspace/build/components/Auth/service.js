@@ -29,6 +29,9 @@ const AuthService = {
                     throw new Error(validate.error.message);
                 }
                 const user = new model_1.default({
+                    _id: body._id,
+                    firstname: body.firstname,
+                    lastname: body.lastname,
                     email: body.email,
                     password: body.password
                 });

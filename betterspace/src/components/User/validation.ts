@@ -26,10 +26,13 @@ class UserValidation extends Validation {
         params: IUserModel
     ): Joi.ValidationResult {
         const schema: Joi.Schema = Joi.object().keys({
-            name: Joi.string().required(),
+            _id: Joi.string().max(10).required(),
+            firstname: Joi.string().required(),
+            lastname: Joi.string().required(),
             email: Joi.string().email({
                 minDomainSegments: 2
-            }).required()
+            }).required(),
+            password: Joi.string().required()
         });
 
         return schema.validate(params);

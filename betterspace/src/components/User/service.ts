@@ -37,7 +37,7 @@ const UserService: IUserService = {
             }
 
             return await UserModel.findOne({
-                _id: new Types.ObjectId(id)
+                _id: id
             });
         } catch (error) {
             throw new Error(error.message);
@@ -81,7 +81,7 @@ const UserService: IUserService = {
             }
 
             const user: IUserModel = await UserModel.findOneAndRemove({
-                _id: new Types.ObjectId(id)
+                _id: id
             });
 
             return user;
