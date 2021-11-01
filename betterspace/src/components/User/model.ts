@@ -3,6 +3,7 @@ import * as connections from '../../config/connection/connection';
 import * as crypto from 'crypto';
 import { Document, Schema } from 'mongoose';
 import { NextFunction } from 'express';
+import internal from 'stream';
 
 /**
  * @export
@@ -10,6 +11,9 @@ import { NextFunction } from 'express';
  * @extends {Document}
  */
 export interface IUserModel extends Document {
+    _id: string;
+    firstname: string;
+    lastname: string;
     email: string;
     password: string;
     passwordResetToken: string;
@@ -43,9 +47,11 @@ export type AuthToken = {
  *        - email
  *        - name
  *      properties:
- *        id:
+ *        _id:
  *          type: string
- *        name:
+ *        firstname:
+ *          type: string
+ *        lastname:
  *          type: string
  *        email:
  *          type: string
@@ -64,8 +70,22 @@ export type AuthToken = {
  *        $ref: '#/components/schemas/UserSchema'
  */
 const UserSchema: Schema = new Schema({
+    _id: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    firstname: {
+        type: String,
+        required: true
+    },
+    lastname: {
+        type: String,
+        required: true
+    },
     email: {
         type: String,
+        required: true,
         unique: true,
         trim: true
     },
@@ -73,8 +93,9 @@ const UserSchema: Schema = new Schema({
     passwordResetToken: String,
     passwordResetExpires: Date,
     tokens: Array,
+    courses: Array
 }, {
-    collection: 'usermodel',
+    collection: 'student',
     versionKey: false
 }).pre('save', async function (next: NextFunction): Promise < void > {
     const user: any = this; // tslint:disable-line
