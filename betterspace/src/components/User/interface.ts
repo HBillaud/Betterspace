@@ -1,3 +1,4 @@
+import { ICourseModel } from '../Course/model';
 import { IUserModel } from './model';
 
 /**
@@ -5,26 +6,12 @@ import { IUserModel } from './model';
  * @interface IUserService
  */
 export interface IUserService {
-
     /**
-     * @returns {Promise<IUserModel[]>}
-     * @memberof IUserService
-     */
-    findAll(): Promise<IUserModel[]>;
-
-    /**
-     * @param {string} code
+     * @param {string} id
      * @returns {Promise<IUserModel>}
      * @memberof IUserService
      */
-    findOne(code: string): Promise<IUserModel>;
-
-    /**
-     * @param {IUserModel} IUserModel
-     * @returns {Promise<IUserModel>}
-     * @memberof IUserService
-     */
-    insert(IUserModel: IUserModel): Promise<IUserModel>;
+    findOne(id: string): Promise<IUserModel>;
 
     /**
      * @param {string} id
@@ -32,4 +19,27 @@ export interface IUserService {
      * @memberof IUserService
      */
     remove(id: string): Promise<IUserModel>;
+
+    /**
+     * @param {string} ide
+     * @param {string} course_id
+     * @return {Promise<IUserModel>}
+     * @memberof IUserService
+     */
+    enrollCourse(id: string, course_id: string): Promise<IUserModel>;
+
+    /**
+     * @param {string} id
+     * @param {string} course_id
+     * @return {Promise<IUserModel>}
+     * @memberof IUserService
+     */
+    dropCourse(id: string, course_id: string): Promise<IUserModel>;    
+
+    /**
+     * @param {string} id
+     * @return {Promise<IUserModel>}
+     * @memberof IUserService
+     */
+    findCourses(id: string): Promise<ICourseModel[]>;
 }

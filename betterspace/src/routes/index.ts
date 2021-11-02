@@ -3,7 +3,8 @@ import * as http from 'http';
 import * as passportConfig from '../config/middleware/passport';
 import * as swaggerUi from 'swagger-ui-express';
 import AuthRouter from './AuthRouter';
-import UserRouter from './UserRouter';
+import StudentRouter from './StudentRouter';
+import ProfessorRouter from './ProfessorRouter';
 let swaggerDoc: Object;
 
 try {
@@ -25,11 +26,20 @@ export function init(app: express.Application): void {
 
     /**
      * @description
-     *  Forwards any requests to the /v1/users URI to our UserRouter
+     *  Forwards any requests to the /v1/student URI to our StudentRouter
      *  Also, check if user authenticated
      * @constructs
      */
-    app.use('/v1/users', passportConfig.isAuthenticated, UserRouter);
+    app.use('/v1/student', passportConfig.isAuthenticated, StudentRouter);
+
+    /**
+     * @description
+     *  Forwards any requests to the /v1/professor URI to our ProfessorRouter
+     *  Also, check if user authenticated
+     * @constructs
+     */
+    app.use('/v1/professor', passportConfig.isAuthenticated, ProfessorRouter);
+
 
     /**
      * @description Forwards any requests to the /auth URI to our AuthRouter

@@ -9,8 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.remove = exports.create = exports.findOne = exports.findAll = void 0;
+exports.enrollCourse = exports.remove = exports.get = void 0;
 const service_1 = require("./service");
+const service_2 = require("../Course/service");
 const error_1 = require("../../config/error");
 /**
  * @export
@@ -19,56 +20,18 @@ const error_1 = require("../../config/error");
  * @param {NextFunction} next
  * @returns {Promise < void >}
  */
-function findAll(req, res, next) {
+function get(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const users = yield service_1.default.findAll();
-            res.status(200).json(users);
+            const courses = yield service_1.default.findCourses(req.params.id);
+            res.status(200).json(courses);
         }
         catch (error) {
             next(new error_1.HttpError(error.message.status, error.message));
         }
     });
 }
-exports.findAll = findAll;
-/**
- * @export
- * @param {Request} req
- * @param {Response} res
- * @param {NextFunction} next
- * @returns {Promise < void >}
- */
-function findOne(req, res, next) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const user = yield service_1.default.findOne(req.params.id);
-            res.status(200).json(user);
-        }
-        catch (error) {
-            next(new error_1.HttpError(error.message.status, error.message));
-        }
-    });
-}
-exports.findOne = findOne;
-/**
- * @export
- * @param {Request} req
- * @param {Response} res
- * @param {NextFunction} next
- * @returns {Promise < void >}
- */
-function create(req, res, next) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const user = yield service_1.default.insert(req.body);
-            res.status(201).json(user);
-        }
-        catch (error) {
-            next(new error_1.HttpError(error.message.status, error.message));
-        }
-    });
-}
-exports.create = create;
+exports.get = get;
 /**
  * @export
  * @param {Request} req
@@ -88,4 +51,24 @@ function remove(req, res, next) {
     });
 }
 exports.remove = remove;
+/**
+ * @export
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
+ * @return {Promise < void >}
+ */
+function enrollCourse(req, res, next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const user = yield service_1.default.enrollCourse(req.params.id, req.body.course_id);
+            yield service_2.default.addStudent(req.params.id, req.body.course_id);
+            res.status(200).json(user);
+        }
+        catch (error) {
+            next(new error_1.HttpError(error.message.status, error.message));
+        }
+    });
+}
+exports.enrollCourse = enrollCourse;
 //# sourceMappingURL=index.js.map

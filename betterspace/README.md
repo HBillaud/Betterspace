@@ -89,7 +89,7 @@ yo node-express-typescript-api
 │   │       └── serverHandlers.ts
 │   └── routes
 │       ├── AuthRouter.ts
-│       ├── UserRouter.ts
+│       ├── StudentRouter.ts
 │       └── index.ts
 ├── swagger.json
 ├── swaggerDef.js

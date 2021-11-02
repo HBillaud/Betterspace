@@ -10,26 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
-const validation_1 = require("./validation");
+const service_1 = require("../Course/service");
 /**
  * @export
  * @implements {IUserModelService}
  */
 const UserService = {
-    /**
-     * @returns {Promise < IUserModel[] >}
-     * @memberof UserService
-     */
-    findAll() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield model_1.default.find({});
-            }
-            catch (error) {
-                throw new Error(error.message);
-            }
-        });
-    },
     /**
      * @param {string} id
      * @returns {Promise < IUserModel >}
@@ -38,35 +24,9 @@ const UserService = {
     findOne(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const validate = validation_1.default.getUser({
-                    id
-                });
-                if (validate.error) {
-                    throw new Error(validate.error.message);
-                }
                 return yield model_1.default.findOne({
                     _id: id
                 });
-            }
-            catch (error) {
-                throw new Error(error.message);
-            }
-        });
-    },
-    /**
-     * @param {IUserModel} user
-     * @returns {Promise < IUserModel >}
-     * @memberof UserService
-     */
-    insert(body) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const validate = validation_1.default.createUser(body);
-                if (validate.error) {
-                    throw new Error(validate.error.message);
-                }
-                const user = yield model_1.default.create(body);
-                return user;
             }
             catch (error) {
                 throw new Error(error.message);
@@ -81,16 +41,49 @@ const UserService = {
     remove(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const validate = validation_1.default.removeUser({
-                    id
-                });
-                if (validate.error) {
-                    throw new Error(validate.error.message);
-                }
                 const user = yield model_1.default.findOneAndRemove({
                     _id: id
                 });
                 return user;
+            }
+            catch (error) {
+                throw new Error(error.message);
+            }
+        });
+    },
+    /**
+     * @param {string} course_id
+     * @return {Promise<IUserModel>}
+     * @memberof IUserService
+     */
+    enrollCourse(id, course_id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const filter = { _id: id };
+                const update = { $push: { courses: course_id } };
+                const user = yield model_1.default.findOneAndUpdate(filter, update);
+                return user;
+            }
+            catch (error) {
+                throw new Error(error.message);
+            }
+        });
+    },
+    /**
+     * @param {string} id
+     * @returns {Promise<ICourseModel[]>}
+     * @memberof IUserService
+     */
+    findCourses(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = yield UserService.findOne(id);
+                var courses = new Array();
+                for (let course_id of user.courses) {
+                    let temp = yield service_1.default.findOne(course_id);
+                    courses.push(temp);
+                }
+                return courses;
             }
             catch (error) {
                 throw new Error(error.message);
