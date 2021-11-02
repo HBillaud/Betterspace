@@ -12,7 +12,7 @@ import { NextFunction, Request, Response } from 'express';
  */
 export async function findOne(req: Request, res: Response, next: NextFunction): Promise < void > {
     try {
-        const course: ICourseModel = await CourseService.findOne(req.params.id);
+        const course: ICourseModel = await CourseService.findOne(req.params.course_id);
 
         res.status(200).json(course);
     } catch (error) {
