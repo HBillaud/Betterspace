@@ -6,7 +6,8 @@ const http = require("http");
 const passportConfig = require("../config/middleware/passport");
 const swaggerUi = require("swagger-ui-express");
 const AuthRouter_1 = require("./AuthRouter");
-const UserRouter_1 = require("./UserRouter");
+const StudentRouter_1 = require("./StudentRouter");
+const ProfessorRouter_1 = require("./ProfessorRouter");
 let swaggerDoc;
 try {
     swaggerDoc = require('../../swagger.json');
@@ -26,11 +27,18 @@ function init(app) {
     const router = express.Router();
     /**
      * @description
-     *  Forwards any requests to the /v1/users URI to our UserRouter
+     *  Forwards any requests to the /v1/student URI to our StudentRouter
      *  Also, check if user authenticated
      * @constructs
      */
-    app.use('/v1/users', passportConfig.isAuthenticated, UserRouter_1.default);
+    app.use('/v1/student', passportConfig.isAuthenticated, StudentRouter_1.default);
+    /**
+     * @description
+     *  Forwards any requests to the /v1/professor URI to our ProfessorRouter
+     *  Also, check if user authenticated
+     * @constructs
+     */
+    app.use('/v1/professor', passportConfig.isAuthenticated, ProfessorRouter_1.default);
     /**
      * @description Forwards any requests to the /auth URI to our AuthRouter
      * @constructs

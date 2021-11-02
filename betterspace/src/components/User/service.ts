@@ -1,8 +1,7 @@
-import * as Joi from 'joi';
 import UserModel, { IUserModel } from './model';
-import UserValidation from './validation';
 import { IUserService } from './interface';
-import { Types } from 'mongoose';
+import { ICourseModel } from '../Course/model';
+import CourseService from '../Course/service';
 
 /**
  * @export
@@ -10,56 +9,15 @@ import { Types } from 'mongoose';
  */
 const UserService: IUserService = {
     /**
-     * @returns {Promise < IUserModel[] >}
-     * @memberof UserService
-     */
-    async findAll(): Promise < IUserModel[] > {
-        try {
-            return await UserModel.find({});
-        } catch (error) {
-            throw new Error(error.message);
-        }
-    },
-
-    /**
      * @param {string} id
      * @returns {Promise < IUserModel >}
      * @memberof UserService
      */
     async findOne(id: string): Promise < IUserModel > {
         try {
-            const validate: Joi.ValidationResult = UserValidation.getUser({
-                id
-            });
-
-            if (validate.error) {
-                throw new Error(validate.error.message);
-            }
-
             return await UserModel.findOne({
                 _id: id
             });
-        } catch (error) {
-            throw new Error(error.message);
-        }
-    },
-
-    /**
-     * @param {IUserModel} user
-     * @returns {Promise < IUserModel >}
-     * @memberof UserService
-     */
-    async insert(body: IUserModel): Promise < IUserModel > {
-        try {
-            const validate: Joi.ValidationResult = UserValidation.createUser(body);
-
-            if (validate.error) {
-                throw new Error(validate.error.message);
-            }
-
-            const user: IUserModel = await UserModel.create(body);
-
-            return user;
         } catch (error) {
             throw new Error(error.message);
         }
@@ -72,20 +30,51 @@ const UserService: IUserService = {
      */
     async remove(id: string): Promise < IUserModel > {
         try {
-            const validate: Joi.ValidationResult = UserValidation.removeUser({
-                id
-            });
-
-            if (validate.error) {
-                throw new Error(validate.error.message);
-            }
-
             const user: IUserModel = await UserModel.findOneAndRemove({
                 _id: id
             });
 
             return user;
         } catch (error) {
+            throw new Error(error.message);
+        }
+    },
+
+    /**
+     * @param {string} course_id
+     * @return {Promise<IUserModel>}
+     * @memberof IUserService
+     */
+    async enrollCourse(id: string, course_id: string): Promise<IUserModel> {
+        try {
+            const filter = {_id: id};
+            const update = {$push: {courses: course_id}};
+
+            const user: IUserModel = await UserModel.findOneAndUpdate(filter, update);
+
+            return user;
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    },
+
+    /**
+     * @param {string} id 
+     * @returns {Promise<ICourseModel[]>}
+     * @memberof IUserService
+     */
+    async findCourses(id: string): Promise<ICourseModel[]> {
+        try {
+            const user: IUserModel = await UserService.findOne(id);
+            var courses: ICourseModel[] = new Array();
+
+            for (let course_id of user.courses) {
+                let temp: ICourseModel = await CourseService.findOne(course_id);
+                courses.push(temp);
+            }
+
+            return courses;
+        } catch(error) {
             throw new Error(error.message);
         }
     }

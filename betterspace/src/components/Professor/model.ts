@@ -7,10 +7,10 @@ import internal from 'stream';
 
 /**
  * @export
- * @interface IUserModel
+ * @interface IProfessorModel
  * @extends {Document}
  */
-export interface IUserModel extends Document {
+export interface IProfessorModel extends Document {
     _id: string;
     firstname: string;
     lastname: string;
@@ -18,7 +18,6 @@ export interface IUserModel extends Document {
     password: string;
     passwordResetToken: string;
     passwordResetExpires: Date;
-    courses: string[];
 
     facebook: string;
     tokens: AuthToken[];
@@ -43,7 +42,7 @@ export type AuthToken = {
  * @swagger
  * components:
  *  schemas:
- *    UserSchema:
+ *    ProfessorSchema:
  *      required:
  *        - email
  *        - name
@@ -65,12 +64,12 @@ export type AuthToken = {
  *          format: date
  *        tokens:
  *          type: array
- *    Users:
+ *    Professors:
  *      type: array
  *      items:
- *        $ref: '#/components/schemas/UserSchema'
+ *        $ref: '#/components/schemas/ProfessorSchema'
  */
-const UserSchema: Schema = new Schema({
+const ProfessorSchema: Schema = new Schema({
     _id: {
         type: String,
         required: true,
@@ -96,7 +95,7 @@ const UserSchema: Schema = new Schema({
     tokens: Array,
     courses: Array
 }, {
-    collection: 'student',
+    collection: 'professor',
     versionKey: false
 }).pre('save', async function (next: NextFunction): Promise < void > {
     const user: any = this; // tslint:disable-line
@@ -120,7 +119,7 @@ const UserSchema: Schema = new Schema({
 /**
  * Method for comparing passwords
  */
-UserSchema.methods.comparePassword = async function (candidatePassword: string): Promise < boolean > {
+ProfessorSchema.methods.comparePassword = async function (candidatePassword: string): Promise < boolean > {
     try {
         const match: boolean = await bcrypt.compare(candidatePassword, this.password);
 
@@ -133,7 +132,7 @@ UserSchema.methods.comparePassword = async function (candidatePassword: string):
 /**
  * Helper method for getting user's gravatar.
  */
-UserSchema.methods.gravatar = function (size: number): string {
+ProfessorSchema.methods.gravatar = function (size: number): string {
     if (!size) {
         size = 200;
     }
@@ -145,4 +144,4 @@ UserSchema.methods.gravatar = function (size: number): string {
     return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
 };
 
-export default connections.db.model < IUserModel > ('UserModel', UserSchema);
+export default connections.db.model < IProfessorModel > ('ProfessorModel', ProfessorSchema);
