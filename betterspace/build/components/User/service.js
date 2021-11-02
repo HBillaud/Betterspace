@@ -70,6 +70,24 @@ const UserService = {
         });
     },
     /**
+     * @param {string} course_id
+     * @return {Promise<IUserModel>}
+     * @memberof IUserService
+     */
+    dropCourse(id, course_id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const filter = { _id: id };
+                const update = { $pull: { courses: course_id } };
+                const user = yield model_1.default.findOneAndUpdate(filter, update);
+                return user;
+            }
+            catch (error) {
+                throw new Error(error.message);
+            }
+        });
+    },
+    /**
      * @param {string} id
      * @returns {Promise<ICourseModel[]>}
      * @memberof IUserService

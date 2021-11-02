@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.enrollCourse = exports.remove = exports.get = void 0;
+exports.dropCourse = exports.enrollCourse = exports.remove = exports.get = void 0;
 const service_1 = require("./service");
 const service_2 = require("../Course/service");
 const error_1 = require("../../config/error");
@@ -71,4 +71,24 @@ function enrollCourse(req, res, next) {
     });
 }
 exports.enrollCourse = enrollCourse;
+/**
+ * @export
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
+ * @return {Promise < void >}
+ */
+function dropCourse(req, res, next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const user = yield service_1.default.dropCourse(req.params.id, req.body.course_id);
+            yield service_2.default.removeStudent(req.params.id, req.body.course_id);
+            res.status(200).json(user);
+        }
+        catch (error) {
+            next(new error_1.HttpError(error.message.status, error.message));
+        }
+    });
+}
+exports.dropCourse = dropCourse;
 //# sourceMappingURL=index.js.map

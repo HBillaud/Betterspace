@@ -1,4 +1,4 @@
-.env
-node_modules/
-build/
-.vscode/
+betterspace/.env
+betterspace/node_modules/
+betterspace/build/
+betterspace/.vscode/
