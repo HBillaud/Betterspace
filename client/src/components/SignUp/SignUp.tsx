@@ -6,14 +6,19 @@ const SignUp = () => {
   const history = useHistory()
   async function handleSubmit(e:any) {
     e.preventDefault()
-    const email: string = e.target[0].value;
-    const firstName: string = e.target[1].value;
-    const lastName: string = e.target[2].value;
-    const password: string= e.target[3].value;
-    const isProf: boolean = e.target[4].checked; /* for now just store this */
+    const id: string = e.target[0].value;
+    const email: string = e.target[1].value;
+    const firstName: string = e.target[2].value;
+    const lastName: string = e.target[3].value;
+    const password: string= e.target[4].value;
+    const isProf: boolean = e.target[5].checked; /* for now just store this */
     await axios.post(process.env.REACT_APP_SERVER + '/auth/signup', {
+      _id: id,
+      firstname: firstName,
+      lastname: lastName,
       email: email,
       password: password, 
+     // professor: isProf,
     }) .then(function (response: any) {
       if (response.data.status === 200) {
         history.push({
@@ -21,7 +26,8 @@ const SignUp = () => {
           state: {name: firstName, courses: []}
         })
       } else {
-        alert('Invalid information given')
+        alert('Invalid information given\n')
+        console.log(response);
       }
     }).catch((error) => {
       console.log(error)
@@ -33,6 +39,8 @@ const SignUp = () => {
 
     <form onSubmit={handleSubmit}>
       <h3> Create an account </h3>
+      <label htmlFor="id">School id (10-digit): </label>
+      <input type="text" id="id" name="id"/><br/><br/>
       <label htmlFor="email">Email: </label>
       <input type="text" id="email" name="email"/><br/><br/>
       <label htmlFor="firstName">First Name: </label>
