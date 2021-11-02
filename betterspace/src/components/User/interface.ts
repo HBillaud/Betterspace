@@ -21,11 +21,20 @@ export interface IUserService {
     remove(id: string): Promise<IUserModel>;
 
     /**
+     * @param {string} ide
      * @param {string} course_id
      * @return {Promise<IUserModel>}
      * @memberof IUserService
      */
     enrollCourse(id: string, course_id: string): Promise<IUserModel>;
+
+    /**
+     * @param {string} id
+     * @param {string} course_id
+     * @return {Promise<IUserModel>}
+     * @memberof IUserService
+     */
+    dropCourse(id: string, course_id: string): Promise<IUserModel>;    
 
     /**
      * @param {string} id

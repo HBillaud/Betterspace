@@ -59,6 +59,24 @@ const UserService: IUserService = {
     },
 
     /**
+     * @param {string} course_id
+     * @return {Promise<IUserModel>}
+     * @memberof IUserService
+     */
+     async dropCourse(id: string, course_id: string): Promise<IUserModel> {
+        try {
+            const filter = {_id: id};
+            const update = {$pull: {courses: course_id}};
+
+            const user: IUserModel = await UserModel.findOneAndUpdate(filter, update);
+
+            return user;
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    },
+
+    /**
      * @param {string} id 
      * @returns {Promise<ICourseModel[]>}
      * @memberof IUserService
