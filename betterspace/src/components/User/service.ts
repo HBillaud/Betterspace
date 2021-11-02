@@ -81,7 +81,7 @@ const UserService: IUserService = {
      * @returns {Promise<ICourseModel[]>}
      * @memberof IUserService
      */
-    async findCourses(id: string): Promise<ICourseModel[]> {
+    async listCurrentCourses(id: string): Promise<ICourseModel[]> {
         try {
             const user: IUserModel = await UserService.findOne(id);
             var courses: ICourseModel[] = new Array();

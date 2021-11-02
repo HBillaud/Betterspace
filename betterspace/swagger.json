@@ -29,6 +29,9 @@
                 "$ref": "#/components/schemas/UserSchema"
               },
               "example": {
+                "_id": "0123456789",
+                "firstname": "John",
+                "lastname": "Wick",
                 "email": "test.user@mail.com",
                 "password": "test_test"
               }
@@ -78,6 +81,9 @@
                 "$ref": "#/components/schemas/UserSchema"
               },
               "example": {
+                "_id": "0123456789",
+                "firstname": "John",
+                "lastname": "Wick",
                 "email": "test.user@mail.com",
                 "password": "test_test"
               }
@@ -146,102 +152,11 @@
         }
       }
     },
-    "/v1/users": {
+    "/v1/student/{id}": {
       "get": {
-        "description": "Get all stored users in Database",
+        "description": "Get student by student_id, list courses student is currently enrolled in.",
         "tags": [
-          "users"
-        ],
-        "security": [
-          {
-            "cookieAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "An array of users",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Users"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "Create new User",
-        "tags": [
-          "users"
-        ],
-        "security": [
-          {
-            "cookieAuth": []
-          }
-        ],
-        "requestBody": {
-          "description": "user creation request body",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserSchema"
-              },
-              "example": {
-                "name": "userName",
-                "email": "test.user@mail.com"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "return created user",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/UserSchema"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/users/{id}": {
-      "get": {
-        "description": "Get user by userId",
-        "tags": [
-          "users"
+          "students"
         ],
         "security": [
           {
@@ -252,7 +167,7 @@
           {
             "in": "path",
             "name": "id",
-            "description": "the unique userId",
+            "description": "the unique _id",
             "required": true,
             "schema": {
               "type": "string"
@@ -261,7 +176,7 @@
         ],
         "responses": {
           "200": {
-            "description": "return user by id",
+            "description": "return user by _id",
             "content": {
               "application/json": {
                 "schema": {
@@ -277,7 +192,7 @@
         }
       },
       "delete": {
-        "description": "Delete user by userId",
+        "description": "Delete student by _id",
         "tags": [
           "users"
         ],
@@ -290,7 +205,7 @@
           {
             "in": "path",
             "name": "id",
-            "description": "the unique userId",
+            "description": "the unique _id",
             "required": true,
             "schema": {
               "type": "string"
@@ -299,7 +214,7 @@
         ],
         "responses": {
           "200": {
-            "description": "return deleted user",
+            "description": "return deleted student",
             "content": {
               "application/json": {
                 "schema": {
@@ -320,14 +235,19 @@
     "schemas": {
       "UserSchema": {
         "required": [
-          "email",
-          "name"
+          "_id",
+          "firstname",
+          "lastname",
+          "email"
         ],
         "properties": {
-          "id": {
+          "_id": {
             "type": "string"
           },
-          "name": {
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
             "type": "string"
           },
           "email": {
@@ -345,16 +265,81 @@
           },
           "tokens": {
             "type": "array"
+          },
+          "courses": {
+            "type": "array"
           }
         }
       },
-      "Users": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/UserSchema"
+      "CourseSchema": {
+        "required": [
+          "_id",
+          "title",
+          "description",
+          "professor"
+        ],
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "professor": {
+            "type": "string"
+          },
+          "assignemnts": {
+            "type": "array"
+          },
+          "students": {
+            "type": "array"
+          }
         }
       },
-      "Error": {
+      "GradeSchema" : {
+        "required": [
+          "student_id",
+          "assignment_id",
+          "grade"
+        ],
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "student_id": {
+            "type": "string"
+          },
+          "assignemnt_id": {
+            "type": "string"
+          },
+          "grade": {
+            "type": "number"
+          }
+        }
+      },
+      "AssignmentSchema": {
+        "required": [
+
+        ],
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "due_date": {
+            "type": "date"
+          }
+        }
+      },
+      "ErrorSchema": {
         "type": "object",
         "required": [
           "status",

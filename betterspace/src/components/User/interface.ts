@@ -41,5 +41,5 @@ export interface IUserService {
      * @return {Promise<IUserModel>}
      * @memberof IUserService
      */
-    findCourses(id: string): Promise<ICourseModel[]>;
+    listCurrentCourses(id: string): Promise<ICourseModel[]>;
 }
