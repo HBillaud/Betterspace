@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
@@ -21,13 +21,13 @@ const SignUp = () => {
      // professor: isProf,
     }) .then(function (response: any) {
       if (response.data.status === 200) {
+        localStorage.setItem('token', 'true');
         history.push({
-          pathname: '/home',
+          pathname: `home`,
           state: {name: firstName, courses: []}
         })
       } else {
-        alert('Invalid information given\n')
-        console.log(response);
+        alert('Invalid data\n' + response.data.message)
       }
     }).catch((error) => {
       console.log(error)
@@ -52,7 +52,7 @@ const SignUp = () => {
       <input type="checkbox" id="teach" name="teach"/>       
       <label htmlFor="teach">I am a professor.</label><br/><br/>
       <button type="submit">Submit</button>
-      <h5>Already have an account? <a href="/">Log in!</a></h5>
+      <h5>Already have an account? <a href="/login">Log in!</a></h5>
 
     </form>
     </div>

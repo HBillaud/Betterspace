@@ -14,7 +14,12 @@ const LogIn = () => {
       password: password, 
     }) .then(function (response: any) {
       if (response.data.status === 200) {
-        history.push('/home')
+        localStorage.setItem('token', 'true');
+        //console.log(sessionStorage.getItem('token'))
+        history.push({
+          pathname: `/home`,
+          state: {name: 'Anon', courses: ['cs381','cs307']}
+        })
       } else {
         alert('Invalid information given')
       }

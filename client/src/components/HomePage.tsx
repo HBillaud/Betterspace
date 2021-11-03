@@ -5,27 +5,28 @@ import useStyles from './GridStyles';
 
 
 const HomePage = (props: any) => {
-  console.log(props.location.state)
-    const name: string = props.location.state.name;
-    const courses: string[] = props.location.state.courses;
+    const name: string = props.location.state.name || "";
+    const courses: string[] = props.location.state.courses || [];
     const classes = useStyles();
-    console.log(name,courses)
-     return (
-         <div>
-           <button type="button">Add course</button>
-         <h3 style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-             {name ? name : "" }'s courses
-         </h3>
-    {courses.length > 0 ? <CircularProgress /> : (
-    <Grid  container alignItems="stretch" spacing={1}>
-      {courses.map((course, index) => (
-        <Grid key={index} item xs={12} sm={2} md={2}>
-          <CourseIcon courseName={course} />
-        </Grid>
-      ))}
-    </Grid>
-    )}
-    </div>
-     )
+    console.log(name,courses);
+      return (
+        <div>
+
+        <h3 style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            {name ? name : "" }'s courses
+        </h3>
+        <button type="button" style={{float: 'right', marginRight: '300px'}}>Add course</button>
+   {courses.length < 1 ? <CircularProgress /> : (
+   <Grid  container alignItems="stretch" spacing={1} justifyContent="center" style={{ minHeight: '100vh' }}>
+     {courses.map((course, index) => (
+       <Grid key={index} item md={2}>
+         <CourseIcon courseName={course} />
+       </Grid>
+     ))}
+   </Grid>
+   )}
+   </div>
+    )
+
 }
 export default HomePage;
