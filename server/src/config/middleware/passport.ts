@@ -4,6 +4,7 @@ import * as passportLocal from 'passport-local';
 import HttpError from '../error';
 import UserModel, { IUserModel } from '../../components/User/model';
 import { NextFunction, Request, Response } from 'express';
+import ProfessorModel, { IProfessorModel } from '../../components/Professor/model';
 
 type LocalStrategyType = typeof passportLocal.Strategy;
 
@@ -41,11 +42,45 @@ passport.deserializeUser(async (id: number, done: Function) => {
  * configuring new local strategy
  * and use it in passport
  */
-passport.use(new LocalStrategy({
+passport.use('student-local', new LocalStrategy({
     usernameField: 'email'
 }, async (email: string, password: string, done: Function): Promise < void > => {
     try {
         const user: IUserModel = await UserModel.findOne({
+            email: email.toLowerCase()
+        });
+
+        if (!user) {
+            return done(undefined, false, {
+                message: `Email ${email} not found.`
+            });
+        }
+
+        const isMatched: boolean = await user.comparePassword(password);
+
+        if (isMatched) {
+            return done(undefined, user);
+        }
+
+        return done(undefined, false, {
+            message: 'Invalid email or password.'
+        });
+
+    } catch (error) {
+        done(error);
+    }
+}));
+
+/**
+ * @description
+ * configuring new local strategy
+ * and use it in passport
+ */
+ passport.use('professor-local', new LocalStrategy({
+    usernameField: 'email'
+}, async (email: string, password: string, done: Function): Promise < void > => {
+    try {
+        const user: IProfessorModel = await ProfessorModel.findOne({
             email: email.toLowerCase()
         });
 
