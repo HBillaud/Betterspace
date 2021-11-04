@@ -83,7 +83,7 @@ passport.use('student-local', new LocalStrategy({
         const user: IProfessorModel = await ProfessorModel.findOne({
             email: email.toLowerCase()
         });
-
+        
         if (!user) {
             return done(undefined, false, {
                 message: `Email ${email} not found.`

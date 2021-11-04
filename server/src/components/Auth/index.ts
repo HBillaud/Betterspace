@@ -39,6 +39,7 @@ function passportRequestLoginStudent(req: Request, res: Response, next: NextFunc
         if (err) return next(new HttpError(err));
 
         res.json({
+            id: user._id,
             status: 200,
             logged: true,
             message: resMessage
@@ -84,7 +85,6 @@ function professorLogin(req: Request, res: Response, next: NextFunction) {
         if (err) {
             return next(new HttpError(400, err.message));
         }
-
         if (!user) {
             return res.json({
                 status: 401,

@@ -18,13 +18,21 @@ const SignUp = () => {
       lastname: lastName,
       email: email,
       password: password, 
-     // professor: isProf,
+      teach: isProf,
     }) .then(function (response: any) {
       if (response.data.status === 200) {
         sessionStorage.setItem('token', id);
-        history.push({
-          pathname: `v1/student/${id}`,
-        })
+        sessionStorage.setItem('professor', isProf.toString());
+        if (!isProf) {
+          history.push({
+            pathname: `/v1/student/${id}`
+          })
+        }
+        else {
+          history.push({
+            pathname: `v1/professor/${id}`
+          })
+        }
       } else {
         alert('Invalid data\n' + response.data.message)
       }
