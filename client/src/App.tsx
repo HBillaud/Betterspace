@@ -6,11 +6,10 @@ import HomePage from './components/HomePage';
 import LogIn from './components/LogIn/LogIn';
 
 function PrivateRoute({component, path}: any) {
-    console.log(sessionStorage.getItem('token'));
     return (
       <Route exact
       path={path}
-      render ={() => localStorage.getItem('token') ?
+      render ={() => sessionStorage.getItem('token') !== null ?
       <div>
       {React.createElement(component)}
     </div>
@@ -29,7 +28,7 @@ function AppRouter() {
           <Route path="/signup" exact >
            <SignUp />
           </Route>
-          <PrivateRoute path="/home" exact component={HomePage}  /> 
+          <PrivateRoute path={["/v1/student/:id","/"]} exact component={HomePage}  /> 
      </Router>
   );
 }

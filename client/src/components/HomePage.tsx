@@ -1,32 +1,57 @@
-import React, { FC } from 'react'
+import React, { useEffect, useState } from 'react'
 import CourseIcon from './CourseIcon';
 import { Grid, CircularProgress } from '@material-ui/core';
 import useStyles from './GridStyles';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 
 const HomePage = (props: any) => {
-    const name: string = props.location.state.name || "";
-    const courses: string[] = props.location.state.courses || [];
-    const classes = useStyles();
-    console.log(name,courses);
+      const [name, setName] = useState('');
+      const [courses, setCourses] = useState([]);
+      const params: {id: string} = useParams();
+      useEffect(() => {
+       async function getUserData() {
+          try{
+            const response: any = await axios.get(process.env.REACT_APP_SERVER + `/v1/student/${params.id}`, { withCredentials: true });
+            if (response.status === 200) {
+              setName(response.data.name);
+              setCourses(response.data.courses);
+            }
+            else {
+              alert ('Cannot find data for this user');
+            }
+          } catch (error: any) {
+            console.log(error)
+          }
+        }
+        getUserData();
+        
+      },[])
       return (
-        <div>
 
+        <div>
+{name ? (
+  <div>
         <h3 style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-            {name ? name : "" }'s courses
-        </h3>
-        <button type="button" style={{float: 'right', marginRight: '300px'}}>Add course</button>
-   {courses.length < 1 ? <CircularProgress /> : (
-   <Grid  container alignItems="stretch" spacing={1} justifyContent="center" style={{ minHeight: '100vh' }}>
-     {courses.map((course, index) => (
-       <Grid key={index} item md={2}>
-         <CourseIcon courseName={course} />
-       </Grid>
-     ))}
+        {name ? name : "" }'s courses
+    </h3>
+    <div>
+{courses.length < 1 ? <CircularProgress style={{justifyContent: 'center', alignItems: 'center', display: 'flex', margin: 'auto'}} /> : (
+<Grid  container alignItems="stretch" spacing={1} justifyContent="center" style={{ minHeight: '100vh' }}>
+ {courses.map((course, index) => (
+   <Grid key={index} item md={2}>
+     <CourseIcon courseName={course} />
    </Grid>
-   )}
+ ))}
+</Grid>
+)}
+    <button type="button" style={{justifyContent: 'center', alignItems: 'center', display: 'flex', margin: 'auto'}} >Add course</button></div>
+
+</div>) :
+(<p>Loading...</p>)
+}
    </div>
     )
-
 }
 export default HomePage;

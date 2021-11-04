@@ -21,10 +21,9 @@ const SignUp = () => {
      // professor: isProf,
     }) .then(function (response: any) {
       if (response.data.status === 200) {
-        localStorage.setItem('token', 'true');
+        sessionStorage.setItem('token', id);
         history.push({
-          pathname: `home`,
-          state: {name: firstName, courses: []}
+          pathname: `v1/student/${id}`,
         })
       } else {
         alert('Invalid data\n' + response.data.message)

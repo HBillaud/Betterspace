@@ -28,7 +28,7 @@ export function configure(app: express.Application): void {
     // helps you secure your Express apps by setting various HTTP headers
     app.use(helmet());
     // providing a Connect/Express middleware that can be used to enable CORS with various options
-    app.use(cors());
+    app.use(cors({credentials: true, origin: 'http://localhost:5000'}));
 
     /**
      * @swagger
@@ -40,9 +40,9 @@ export function configure(app: express.Application): void {
      *      name: sid
      */
     app.use(session({
-        resave: true,
-        saveUninitialized: true,
         secret: config.secret,
+        saveUninitialized: true,
+        resave: true,
         name: 'api.sid',
         store: process.env.NODE_ENV === 'development' ? 
         new session.MemoryStore() :

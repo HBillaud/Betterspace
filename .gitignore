@@ -2,7 +2,7 @@
 
 # dependencies
 client/node_modules
-client/yarn.lock
+*/yarn.lock
 /.pnp
 .pnp.js
 
@@ -25,5 +25,5 @@ yarn-error.log*
 server/.env
 server/node_modules/**
 server/build/**
-server/package-lock.json
+*/package-lock.json
 .vscode/**

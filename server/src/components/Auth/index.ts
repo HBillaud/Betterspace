@@ -16,6 +16,7 @@ function passportRequestLogin(req: Request, res: Response, next: NextFunction, u
         if (err) return next(new HttpError(err));
 
         res.json({
+            id: user._id,
             status: 200,
             logged: true,
             message: resMessage
