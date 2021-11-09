@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { CourseComponent, ProfessorComponent } from '../components';
+import { AssignmentComponent, CourseComponent, ProfessorComponent } from '../components';
 
 /**
  * @constant {express.Router}
@@ -73,7 +73,48 @@ router.get('/:id', ProfessorComponent.findOne);
  *              logged: false
  *              message: Invalid body
  */
- router.post('/:id', CourseComponent.add);
+router.post('/:id', CourseComponent.add);
+
+
+/**
+ * POST method route
+ * @example http://localhost:PORT/v1/professor/:id/courses/:course_id/assignments
+ * 
+ * @swagger
+ * /v1/professor/:id/courses/:course_id/assignments :
+ *  post:
+ *    description: Add assignments to specific course
+ *    tags: ["assignment"]
+ *    requestBody:
+ *      description: add assignment body
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/CourseSchema'
+ *          example:
+ *            title: Homework #3
+ *            description: Make sure to submit your assignment on time! Reminder: only the last submission is graded
+ *            due_date: TODO
+ *    responses:
+ *      200:
+ *        description: assignment successfuly created
+ *        content:
+ *          appication/json:
+ *            example:
+ *              status: 200
+ *              logged: true
+ *              message: Assignment successfully created!
+ *      401:
+ *        description: Assignment not created, invalid body
+ *        content:
+ *          application/json:
+ *            example:
+ *              status: 401
+ *              logged: false
+ *              message: Invalid body
+ */
+router.post('/:id/courses/:course_id/assignments', AssignmentComponent.add)
 
 /**
  * @export {express.Router}
