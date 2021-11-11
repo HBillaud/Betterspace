@@ -34,6 +34,10 @@ export interface IAssignmentModel extends Document {
  *        $ref: '#/components/schemas/AssignmentSchema'
  */
 const AssignmentSchema: Schema = new Schema({
+    _id: {
+        type: Types.ObjectId,
+        unique: true
+    },
     title: {
         type: String,
         required: true

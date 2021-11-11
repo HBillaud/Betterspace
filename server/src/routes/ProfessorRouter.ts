@@ -114,7 +114,7 @@ router.post('/:id', CourseComponent.add);
  *              logged: false
  *              message: Invalid body
  */
-router.post('/:id/courses/:course_id/assignments', AssignmentComponent.add)
+router.post('/:id/courses/:course_id/assignments', AssignmentComponent.addAssignment);
 
 /**
  * @export {express.Router}

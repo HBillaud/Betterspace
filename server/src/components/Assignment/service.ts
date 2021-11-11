@@ -28,6 +28,7 @@ const AssignmentService : IAssignmentService = {
     async add(body: IAssignmentModel): Promise< IAssignmentModel > {
         try {
             const assignment: IAssignmentModel = new AssignmentModel({
+                _id: new Types.ObjectId(),
                 title: body.title,
                 description: body.description,
                 due_date: body.due_date
@@ -35,7 +36,7 @@ const AssignmentService : IAssignmentService = {
 
             return await assignment.save();
         } catch (error) {
-            throw new Error('This course already exists');
+            throw new Error(error.message);
         }
     }
 }

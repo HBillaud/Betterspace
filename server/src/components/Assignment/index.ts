@@ -2,6 +2,7 @@ import AssignmentService from './service';
 import { HttpError } from '../../config/error';
 import { IAssignmentModel } from './model';
 import { NextFunction, Request, Response } from 'express';
+import CourseService from '../Course/service';
 
 /**
  * @export
@@ -27,9 +28,10 @@ export async function findOne(req: Request, res: Response, next: NextFunction): 
  * @param {NextFunction} next
  * @returns {Promise < void >}
  */
- export async function add(req: Request, res: Response, next: NextFunction): Promise < void > {
+ export async function addAssignment(req: Request, res: Response, next: NextFunction): Promise < void > {
     try {
         const assignment: IAssignmentModel = await AssignmentService.add(req.body);
+        await CourseService.addAssignment(req.params.course_id, assignment);
 
         res.status(200).json(assignment);
     } catch (error) {
