@@ -29,7 +29,7 @@ export async function findOne(req: Request, res: Response, next: NextFunction): 
  */
  export async function add(req: Request, res: Response, next: NextFunction): Promise < void > {
     try {
-        const course: ICourseModel = await CourseService.add(req.body, req.params.id);
+        const course: ICourseModel = await CourseService.addCourse(req.body, req.params.id);
 
         res.status(200).json(course);
     } catch (error) {

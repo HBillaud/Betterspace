@@ -1,5 +1,6 @@
 import CourseModel, { ICourseModel } from './model';
 import { ICourseService } from './interface';
+import { IAssignmentModel } from '../Assignment/model';
 
 /**
  * @export
@@ -26,7 +27,7 @@ const CourseService: ICourseService = {
      * @returns {Promise < ICourseModel >}
      * @memberof CourseService
      */
-     async add(body: ICourseModel, professor_id: string): Promise < ICourseModel > {
+     async addCourse(body: ICourseModel, professor_id: string): Promise < ICourseModel > {
         try {
             const course: ICourseModel = new CourseModel({
                 _id: body._id,
@@ -101,6 +102,22 @@ const CourseService: ICourseService = {
             });
 
             return course;
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    },
+
+    /**
+     * @param {string} course_id
+     * @param {IAssignmentModel} assignment
+     * @memberof CourseService
+     */
+    async addAssignment(course_id: string, assignment: IAssignmentModel): Promise<ICourseModel> {
+        try {
+            const filter = { _id : course_id };
+            const update = {$push : {assignments: assignment._id}};
+
+            return await CourseModel.findOneAndUpdate(filter, update);
         } catch (error) {
             throw new Error(error.message);
         }

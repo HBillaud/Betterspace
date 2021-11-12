@@ -1,3 +1,4 @@
+import { IAssignmentModel } from '../Assignment/model';
 import { ICourseModel } from './model';
 
 /**
@@ -17,7 +18,7 @@ export interface ICourseService {
      * @returns {Promise<ICourseModel>}
      * @memberof ICourseService
      */
-    add(body: ICourseModel, professor_id: string): Promise<ICourseModel>;
+    addCourse(body: ICourseModel, professor_id: string): Promise<ICourseModel>;
 
     /**
      * @param {string} student_id
@@ -26,6 +27,14 @@ export interface ICourseService {
      * @memberof ICourseService
      */
     addStudent(student_id: string, course_id: string): Promise<ICourseModel>;
+
+    /**
+     * @param {string} course_id
+     * @param {IAssignmentModel} assignment
+     * @return {Promise<ICourseModel>}
+     * @memberof ICourseService
+     */
+    addAssignment(course_id: string, assignment: IAssignmentModel): Promise<ICourseModel>;
 
         /**
      * @param {string} student_id

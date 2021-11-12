@@ -40,7 +40,6 @@ export interface ICourseModel extends Document {
 const CourseSchema: Schema = new Schema({
     _id: {
         type: String,
-        required: true,
         unique: true
     },
     title: {

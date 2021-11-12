@@ -17,12 +17,6 @@ const AuthService: IAuthService = {
      */
     async createUser(body: IUserModel): Promise < IUserModel > {
         try {
-            const validate: Joi.ValidationResult = AuthValidation.createUser(body);
-
-            if (validate.error) {
-                throw new Error(validate.error.message);
-            }
-
             const user: IUserModel = new UserModel({
                 _id: body._id,
                 firstname: body.firstname,
