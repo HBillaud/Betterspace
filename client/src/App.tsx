@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom
 import SignUp from './components/SignUp/SignUp'
 import HomePage from './components/HomePage';
 import LogIn from './components/LogIn/LogIn';
+import ProfHomePage from './components/ProfHomePage';
 
 function PrivateRoute({component, path}: any) {
     return (
@@ -29,6 +30,7 @@ function AppRouter() {
            <SignUp />
           </Route>
           <PrivateRoute path={["/v1/student/:id","/"]} exact component={HomePage}  /> 
+          <PrivateRoute path={["/v1/professor/:id"]} exact component={ProfHomePage} />
      </Router>
   );
 }

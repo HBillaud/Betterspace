@@ -18,6 +18,7 @@ export interface IProfessorModel extends Document {
     password: string;
     passwordResetToken: string;
     passwordResetExpires: Date;
+    courses: string[];
 
     facebook: string;
     tokens: AuthToken[];
