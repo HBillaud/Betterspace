@@ -1,5 +1,5 @@
 import * as connections from '../../config/connection/connection';
-import { Document, Schema } from 'mongoose';
+import { Document, model, Schema } from 'mongoose';
 
 /**
  * @export
@@ -51,14 +51,24 @@ const CourseSchema: Schema = new Schema({
         required: true
     },
     professor: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: 'ProfessorModel',
         required: true
     },
-    assignments: Array,
-    students: Array
+    assignments: {
+        type: Schema.Types.ObjectId,
+        ref: 'AssignmentModel',
+        required: false
+    },
+    students: {
+        type: Schema.Types.ObjectId,
+        ref: 'UserModel',
+        required: false
+    }
 }, {
     collection: 'courses',
     versionKey: false
 });
+//export default model<ICourseModel>('CourseModel', CourseSchema);
 
 export default connections.db.model < ICourseModel > ('CourseModel', CourseSchema);

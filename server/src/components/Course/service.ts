@@ -1,6 +1,8 @@
 import CourseModel, { ICourseModel } from './model';
 import { ICourseService } from './interface';
 import { IAssignmentModel } from '../Assignment/model';
+import ProfessorService from '../Professor/service';
+import { IProfessorModel } from '../Professor/model';
 
 /**
  * @export
@@ -29,13 +31,14 @@ const CourseService: ICourseService = {
      */
      async addCourse(body: ICourseModel, professor_id: string): Promise < ICourseModel > {
         try {
+            const prof = await ProfessorService.findOne(professor_id);
             const course: ICourseModel = new CourseModel({
                 _id: body._id,
                 title: body.title,
                 description: body.description,
-                professor: professor_id
+                professor: prof
             });
-
+        
             const query: ICourseModel = await CourseModel.findOne({
                 _id: body._id
             });

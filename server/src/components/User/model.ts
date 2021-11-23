@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcryptjs';
 import * as connections from '../../config/connection/connection';
 import * as crypto from 'crypto';
-import { Document, Schema } from 'mongoose';
+import { Document, Schema, model } from 'mongoose';
 import { NextFunction } from 'express';
 import internal from 'stream';
 
@@ -94,7 +94,10 @@ const UserSchema: Schema = new Schema({
     passwordResetToken: String,
     passwordResetExpires: Date,
     tokens: Array,
-    courses: Array
+    courses: {
+        type: Schema.Types.ObjectId,
+        ref: 'CourseModel'
+    }
 }, {
     collection: 'student',
     versionKey: false
@@ -144,5 +147,5 @@ UserSchema.methods.gravatar = function (size: number): string {
 
     return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
 };
-
+//export default model<IUserModel> ('UserModel', UserSchema);
 export default connections.db.model < IUserModel > ('UserModel', UserSchema);

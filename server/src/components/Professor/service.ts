@@ -51,7 +51,6 @@ const ProfessorService: IProfessorService = {
             try {
                 const filter = {_id: id};
                 const update = {$push: {courses: course_id}};
-                console.log(id);
                 const user: IProfessorModel = await ProfessorModel.findOneAndUpdate(filter, update);
     
                 return user;
