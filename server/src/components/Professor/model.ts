@@ -18,7 +18,7 @@ export interface IProfessorModel extends Document {
     password: string;
     passwordResetToken: string;
     passwordResetExpires: Date;
-    courses: string[];
+    courses: [{ type: Schema.Types.String, ref: 'CourseModel' }];
 
     facebook: string;
     tokens: AuthToken[];
@@ -94,7 +94,7 @@ const ProfessorSchema: Schema = new Schema({
     passwordResetToken: String,
     passwordResetExpires: Date,
     tokens: Array,
-    courses: Array
+    courses: [{ type: Schema.Types.String, ref: 'CourseModel' }],
 }, {
     collection: 'professor',
     versionKey: false

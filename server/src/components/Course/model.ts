@@ -1,5 +1,5 @@
 import * as connections from '../../config/connection/connection';
-import { Document, model, Schema } from 'mongoose';
+import { Document, isValidObjectId, model, Schema } from 'mongoose';
 
 /**
  * @export
@@ -10,9 +10,18 @@ export interface ICourseModel extends Document {
     _id: string;
     title: string;
     description: string;
-    professor: string;
-    assignments: string[];
-    students: string[];
+    professor: {
+        type: Schema.Types.String,
+        ref: 'ProfessorModel',
+    };
+    assignments: [{
+        type: Schema.Types.ObjectId,
+        ref: 'AssignmentModel',
+    }];
+    students: [{
+        type: Schema.Types.String,
+        ref: 'UserModel',
+    }];
 }
  
 
@@ -51,24 +60,25 @@ const CourseSchema: Schema = new Schema({
         required: true
     },
     professor: {
-        type: Schema.Types.ObjectId,
+        type: Schema.Types.String,
         ref: 'ProfessorModel',
         required: true
     },
-    assignments: {
+    assignments: [{
         type: Schema.Types.ObjectId,
         ref: 'AssignmentModel',
         required: false
-    },
-    students: {
-        type: Schema.Types.ObjectId,
+    }],
+    students: [{
+        type: Schema.Types.String,
         ref: 'UserModel',
         required: false
-    }
+    }]
 }, {
     collection: 'courses',
     versionKey: false
 });
+
 //export default model<ICourseModel>('CourseModel', CourseSchema);
 
 export default connections.db.model < ICourseModel > ('CourseModel', CourseSchema);
