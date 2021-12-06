@@ -87,7 +87,7 @@ const UserService: IUserService = {
             var courses: ICourseModel[] = new Array();
 
             for (let course_id of user.courses) {
-                let temp: ICourseModel = await CourseService.findOne(course_id);
+                let temp: ICourseModel = await CourseService.findOne(course_id.toString());
                 courses.push(temp);
             }
 

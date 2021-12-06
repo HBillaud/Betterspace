@@ -18,10 +18,10 @@ export interface IUserModel extends Document {
     password: string;
     passwordResetToken: string;
     passwordResetExpires: Date;
-    courses: {
+    courses: [{
         type: Schema.Types.String,
         ref: 'CourseModel'
-    };
+    }];
 
     facebook: string;
     tokens: AuthToken[];
@@ -97,10 +97,10 @@ const UserSchema: Schema = new Schema({
     passwordResetToken: String,
     passwordResetExpires: Date,
     tokens: Array,
-    courses: {
+    courses: [{
         type: Schema.Types.String,
         ref: 'CourseModel'
-    }
+    }]
 }, {
     collection: 'student',
     versionKey: false
