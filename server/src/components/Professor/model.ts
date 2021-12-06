@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcryptjs';
 import * as connections from '../../config/connection/connection';
 import * as crypto from 'crypto';
-import { Document, Schema } from 'mongoose';
+import { Document, Schema, model } from 'mongoose';
 import { NextFunction } from 'express';
 import internal from 'stream';
 
@@ -18,7 +18,7 @@ export interface IProfessorModel extends Document {
     password: string;
     passwordResetToken: string;
     passwordResetExpires: Date;
-    courses: string[];
+    courses: [{ type: Schema.Types.String, ref: 'CourseModel' }];
 
     facebook: string;
     tokens: AuthToken[];
@@ -94,7 +94,7 @@ const ProfessorSchema: Schema = new Schema({
     passwordResetToken: String,
     passwordResetExpires: Date,
     tokens: Array,
-    courses: Array
+    courses: [{ type: Schema.Types.String, ref: 'CourseModel' }],
 }, {
     collection: 'professor',
     versionKey: false
@@ -144,5 +144,5 @@ ProfessorSchema.methods.gravatar = function (size: number): string {
 
     return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
 };
-
+//export default model<IProfessorModel>('ProfessorModel', ProfessorSchema);
 export default connections.db.model < IProfessorModel > ('ProfessorModel', ProfessorSchema);

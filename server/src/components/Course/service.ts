@@ -1,6 +1,9 @@
 import CourseModel, { ICourseModel } from './model';
 import { ICourseService } from './interface';
 import { IAssignmentModel } from '../Assignment/model';
+import ProfessorService from '../Professor/service';
+import { IProfessorModel } from '../Professor/model';
+import {Types} from 'mongoose';
 
 /**
  * @export
@@ -35,7 +38,6 @@ const CourseService: ICourseService = {
                 description: body.description,
                 professor: professor_id
             });
-
             const query: ICourseModel = await CourseModel.findOne({
                 _id: body._id
             });

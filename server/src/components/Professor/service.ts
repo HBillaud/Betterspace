@@ -2,7 +2,7 @@ import * as Joi from 'joi';
 import ProfessorModel, { IProfessorModel } from './model';
 import { IProfessorService } from './interface';
 import { Types } from 'mongoose';
-import { ICourseModel } from '../Course/model';
+import CourseModel, { ICourseModel } from '../Course/model';
 import CourseService from '../Course/service';
 
 /**
@@ -17,6 +17,12 @@ const ProfessorService: IProfessorService = {
      */
     async findOne(id: string): Promise < IProfessorModel > {
         try {
+            //example of how to get description of course id
+            // ProfessorModel.findOne({_id: id}).populate('courses', 'description')
+            // .exec().then((data) => {
+            //     console.log(data);
+            // })
+            
             return await ProfessorModel.findOne({
                 _id: id
             });
@@ -50,10 +56,9 @@ const ProfessorService: IProfessorService = {
     async addCourse(id: string, course_id: string): Promise<IProfessorModel> {
             try {
                 const filter = {_id: id};
-                const update = {$push: {courses: course_id}};
-                console.log(id);
+                const update = {$push: {courses: await CourseModel.findOne({_id: course_id})}};
                 const user: IProfessorModel = await ProfessorModel.findOneAndUpdate(filter, update);
-    
+                await ProfessorModel.findOne({_id: id})
                 return user;
             } catch (error) {
                 throw new Error(error.message);
@@ -62,20 +67,20 @@ const ProfessorService: IProfessorService = {
 
     /**
      * @param {string} id 
-     * @returns {Promise<ICourseModel[]>}
+     * @returns {Promise<any[]>}
      * @memberof IProfessorService
      */
-    async get(id: string): Promise<ICourseModel[]> {
+    async get(id: string): Promise<any[]> {
         try {
             const professor: IProfessorModel = await ProfessorService.findOne(id);
             var courses: ICourseModel[] = new Array();
 
-            for (let course_id of professor.courses) {
-                let temp: ICourseModel = await CourseService.findOne(course_id);
-                courses.push(temp);
-            }
+            // for (let course of professor.courses) {
+            //     let temp: ICourseModel = await CourseService.findOne(course._id);
+            //     courses.push(temp);
+            // }
 
-            return courses;
+            return professor.courses;
         } catch(error) {
             throw new Error(error.message);
         }

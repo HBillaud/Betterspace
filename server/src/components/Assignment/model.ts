@@ -11,6 +11,7 @@ export interface IAssignmentModel extends Document {
     title: string;
     description: string;
     due_date: string;
+    course: {type: Schema.Types.String, ref: 'CourseModel'};
 }
  
 
@@ -49,7 +50,8 @@ const AssignmentSchema: Schema = new Schema({
     due_date: {
         type: String,
         required: true
-    }
+    },
+    course: {type: Schema.Types.String, ref: 'CourseModel', required: true}
 }, {
     collection: 'assignments',
     versionKey: false

@@ -3,6 +3,7 @@ import { HttpError } from '../../config/error';
 import { ICourseModel } from './model';
 import { NextFunction, Request, Response } from 'express';
 import ProfessorService from '../Professor/service';
+import { Types } from 'mongoose';
 
 /**
  * @export
@@ -30,9 +31,9 @@ export async function findOne(req: Request, res: Response, next: NextFunction): 
  */
  export async function add(req: Request, res: Response, next: NextFunction): Promise < void > {
     try {
+        req.body._id = new Types.ObjectId(req.body._id);
         const course: ICourseModel = await CourseService.addCourse(req.body, req.params.id);
         await ProfessorService.addCourse(req.params.id, req.body._id);
-        console.log(req.params);
         res.status(200).json(course);
     } catch (error) {
         next(new HttpError(error.message.status, error.message));

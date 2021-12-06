@@ -30,7 +30,7 @@ export async function findOne(req: Request, res: Response, next: NextFunction): 
  */
  export async function addAssignment(req: Request, res: Response, next: NextFunction): Promise < void > {
     try {
-        const assignment: IAssignmentModel = await AssignmentService.add(req.body);
+        const assignment: IAssignmentModel = await AssignmentService.add(req.body, req.params.course_id);
         await CourseService.addAssignment(req.params.course_id, assignment);
 
         res.status(200).json(assignment);

@@ -14,8 +14,9 @@ export interface IAssignmentService {
 
     /**
      * @param {IAssignmentModel} body
+     * @param {string} course_id
      * @returns {Promise<IAssignmentModel>}
      * @memberof IAssignmentService
      */
-    add(body: IAssignmentModel): Promise<IAssignmentModel>;
+    add(body: IAssignmentModel, course_id: string): Promise<IAssignmentModel>;
 }
