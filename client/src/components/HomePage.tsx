@@ -26,7 +26,7 @@ const HomePage = (props: any) => {
           }
         }
         getUserData();
-        
+
       },[])
       return (
 

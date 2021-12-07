@@ -18,7 +18,6 @@ const ProfHomePage = (props: any) => {
               setName(response.data.firstname);
               setCourses(response.data.courses);
               console.log(response.data);
-
             }
             else {
               alert ('Cannot find data for this user');
