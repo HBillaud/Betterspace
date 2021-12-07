@@ -42,7 +42,7 @@ const ProfHomePage = (props: any) => {
 <Grid  container alignItems="stretch" spacing={1} justifyContent="center" style={{ minHeight: '100vh' }}>
  {courses.map((course, index) => (
    <Grid key={index} item lg={2}>
-     <CourseIcon courseName={course} />
+     <CourseIcon courseName={course} id={params.id} />
    </Grid>
  ))}
 </Grid>
