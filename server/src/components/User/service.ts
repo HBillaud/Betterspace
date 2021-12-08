@@ -49,7 +49,7 @@ const UserService: IUserService = {
         try {
             const filter = {_id: id};
             const update = {$push: {courses: course_id}};
-
+            console.log(course_id)
             const user: IUserModel = await UserModel.findOneAndUpdate(filter, update);
 
             return user;

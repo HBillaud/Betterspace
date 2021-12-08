@@ -17,6 +17,7 @@ const ProfHomePage = (props: any) => {
             if (response.status === 200) {
               setName(response.data.firstname);
               setCourses(response.data.courses);
+              console.log(response.data);
             }
             else {
               alert ('Cannot find data for this user');
@@ -26,7 +27,7 @@ const ProfHomePage = (props: any) => {
           }
         }
         getUserData();
-        
+
       },[])
       return (
 
@@ -41,7 +42,7 @@ const ProfHomePage = (props: any) => {
 <Grid  container alignItems="stretch" spacing={1} justifyContent="center" style={{ minHeight: '100vh' }}>
  {courses.map((course, index) => (
    <Grid key={index} item lg={2}>
-     <CourseIcon courseName={course} />
+     <CourseIcon courseName={course} id={params.id} />
    </Grid>
  ))}
 </Grid>

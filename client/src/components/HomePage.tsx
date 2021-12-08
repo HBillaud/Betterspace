@@ -15,7 +15,7 @@ const HomePage = (props: any) => {
           try{
             const response: any = await axios.get(process.env.REACT_APP_SERVER + `/v1/student/${params.id}`, { withCredentials: true });
             if (response.status === 200) {
-              setName(response.data.name);
+              setName(response.data.firstname);
               setCourses(response.data.courses);
             }
             else {
@@ -26,7 +26,7 @@ const HomePage = (props: any) => {
           }
         }
         getUserData();
-        
+
       },[])
       return (
 
@@ -41,7 +41,7 @@ const HomePage = (props: any) => {
 <Grid  container alignItems="stretch" spacing={1} justifyContent="center" style={{ minHeight: '100vh' }}>
  {courses.map((course, index) => (
    <Grid key={index} item md={2}>
-     <CourseIcon courseName={course} />
+     <CourseIcon courseName={course} id={params.id} />
    </Grid>
  ))}
 </Grid>
