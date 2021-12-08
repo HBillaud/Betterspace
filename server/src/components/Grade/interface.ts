@@ -17,12 +17,19 @@ export interface IGradeService {
      * @returns {Promise<IGradeModel>}
      * @memberof IGradeService
      */
-    addGrade(body: IGradeModel): Promise<IGradeModel>;
+    addGrade(student_id: string, assignment_id: string, body: {grade: number}): Promise<IGradeModel>;
+
+    /**
+     * @param {IGradeModel} body
+     * @returns {Promise<IGradeModel>}
+     * @memberof IGradeService
+     */
+    updateGrade(grade_id: Types.ObjectId, body: {grade: number}): Promise<IGradeModel>;
 
     /**
      * @param {string} id
      * @returns {Promise<IGradeModel>}
      * @memberof IGradeService
      */
-    remove(id: string): Promise<IGradeModel>;
+    remove(id: Types.ObjectId): Promise<IGradeModel>;
 }

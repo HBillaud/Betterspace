@@ -15,7 +15,7 @@ const GradeService: IGradeService = {
      * @returns {Promise < IGradeModel >}
      * @memberof GradeService
      */
-    async findOne(grade_id: string): Promise < IGradeModel > {
+    async findOne(grade_id: Types.ObjectId): Promise < IGradeModel > {
         try {
             return await GradeModel.findOne({
                 _id: grade_id
@@ -30,11 +30,12 @@ const GradeService: IGradeService = {
      * @returns {Promise < IGradeModel >}
      * @memberof GradeService
      */
-     async addGrade(body: IGradeModel): Promise < IGradeModel > {
+     async addGrade(student_id: string, assignment_id: string, body: {grade: number}): Promise < IGradeModel > {
         try {
             const grade: IGradeModel = new GradeModel({
-                assignment_id: body.assignment_id,
-                student_id: body.student_id,
+                _id: new Types.ObjectId(),
+                assignment_id: assignment_id,
+                student_id: student_id,
                 grade: body.grade
             });
 
@@ -45,12 +46,27 @@ const GradeService: IGradeService = {
             throw new Error(error.message);
         }
     },
+        /**
+     * @param {IGradeModel} body
+     * @returns {Promise < IGradeModel >}
+     * @memberof GradeService
+     */
+         async updateGrade(grade_id: Types.ObjectId, body: {grade: number}): Promise < IGradeModel > {
+            try {
+                const filter = { _id : grade_id };
+                const update = { grade: body.grade}
+    
+                return await GradeModel.findOneAndUpdate(filter, update);
+            } catch (error) {
+                throw new Error(error.message);
+            }
+        },
     /**
      * @param {string} id
      * @returns {Promise < IGradeModel >}
      * @memberof GradeS
      */
-    async remove(id: string): Promise < IGradeModel > {
+    async remove(id: Types.ObjectId): Promise < IGradeModel > {
         try {
             const grade: IGradeModel = await GradeModel.findOneAndRemove({
                 _id: id
