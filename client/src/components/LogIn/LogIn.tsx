@@ -11,7 +11,7 @@ const LogIn = () => {
     const isProf: boolean = e.target[2].checked;
     await axios.post(process.env.REACT_APP_SERVER + '/auth/login', {
       email: email,
-      password: password, 
+      password: password,
       teach: isProf,
     }) .then(function (response: any) {
       if (response.data.status === 200) {
@@ -21,7 +21,7 @@ const LogIn = () => {
           history.push({
             pathname: `/v1/student/${response.data.id}`
           })
-        }        
+        }
         else {
           history.push({
             pathname: `v1/professor/${response.data.id}`
@@ -43,13 +43,13 @@ const LogIn = () => {
       <input type="text" id="email" name="email"/><br/><br/>
       <label htmlFor="password">Password: </label>
       <input type="text" id="password" name="password"/><br/><br/>
-      <input type="checkbox" id="teach" name="teach"/>       
+      <input type="checkbox" id="teach" name="teach"/>
       <label htmlFor="teach">I am a professor.</label><br/><br/>
       <button type="submit">Submit</button>
       <h5>Don't have an account? <a href="/signup">Sign up!</a></h5>
 
     </form>
     </div>
-  )  
+  )
 }
 export default LogIn;

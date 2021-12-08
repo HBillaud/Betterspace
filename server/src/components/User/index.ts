@@ -15,8 +15,8 @@ import { ICourseModel } from '../Course/model';
 export async function get(req: Request, res: Response, next: NextFunction): Promise < void > {
     try {
         const courses: ICourseModel[] = await UserService.listCurrentCourses(req.params.id);
-        const name: String =  (await UserService.findOne(req.params.id)).firstname;
-        res.status(200).json({courses: courses, name: name});
+        const name: IUserModel =  (await UserService.findOne(req.params.id));
+        res.status(200).json(name);
     } catch (error) {
         next(new HttpError(error.message.status, error.message));
     }

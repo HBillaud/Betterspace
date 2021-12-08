@@ -75,5 +75,4 @@ complete guide [here](https://google.com)
 - Jackson McCluskey @jacksonmccluskey
 - Hadrien Billaud @hbillaud
 - Julia Schneider @schne115
-- Quinten Gowdy @...
-
+- Quinten Gowdy @qhyltong
