@@ -49,7 +49,13 @@ const UserService: IUserService = {
         try {
             const filter = {_id: id};
             const update = {$push: {courses: course_id}};
-
+            const query: IUserModel = await UserModel.findOne({
+                _id: id
+            });
+            console.log(course_id, query.courses);
+            if (course_id in query.courses) {
+                throw new Error('This student is already enrolled');
+            }
             const user: IUserModel = await UserModel.findOneAndUpdate(filter, update);
 
             return user;
