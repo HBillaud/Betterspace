@@ -4,6 +4,8 @@ import { IAssignmentModel } from '../Assignment/model';
 import ProfessorService from '../Professor/service';
 import { IProfessorModel } from '../Professor/model';
 import {Types} from 'mongoose';
+import { IGradeModel } from '../Grade/model';
+import GradeService from '../Grade/service';
 
 /**
  * @export
@@ -67,7 +69,6 @@ const CourseService: ICourseService = {
             const query: ICourseModel = await CourseModel.findOne({
                 _id: course_id
             });
-            console.log(student_id, query.students);
             if (student_id in query.students) {
                 throw new Error('This student is already enrolled');
             }
@@ -79,6 +80,28 @@ const CourseService: ICourseService = {
         }
     },    
    
+    async getStudentGrades(student_id: string, course_id: string): Promise<{grade: Number, assignment: string, description: string, due_date: string}[]> {
+        try {
+            const populatedCourse = await CourseModel.findById(course_id).populate('assignments');
+            if (populatedCourse) {
+                const assignments: any = populatedCourse.assignments;
+                let grades: {grade: Number, assignment: string, description: string, due_date: string}[] = [];
+                for (let i = 0; i < assignments.length; i++) {
+                    const grade: IGradeModel = await GradeService.findOne(assignments[i]._id, student_id);
+                    if (grade) {
+                        grades.push({grade: grade.grade, assignment: assignments[i].title, description: assignments[i].description, due_date: assignments[i].due_date });
+                    } else {
+                        grades.push({grade: 0, assignment: assignments[i].title, description: assignments[i].description, due_date: assignments[i].due_date });
+                    }
+                }
+                return grades;
+            } else {
+                return;
+            }
+        } catch (error) {
+            throw new Error (error.message);
+        }
+    },
     /**
      * @param {string} student_id
      * @param {string} course_id

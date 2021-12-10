@@ -15,10 +15,11 @@ const GradeService: IGradeService = {
      * @returns {Promise < IGradeModel >}
      * @memberof GradeService
      */
-    async findOne(grade_id: Types.ObjectId): Promise < IGradeModel > {
+    async findOne(assignment_id: Types.ObjectId, student_id: string): Promise < IGradeModel > {
         try {
             return await GradeModel.findOne({
-                _id: grade_id
+                student_id: student_id,
+                assignment_id: assignment_id
             });
         } catch (error) {
             throw new Error(error.message);
@@ -46,7 +47,7 @@ const GradeService: IGradeService = {
             throw new Error(error.message);
         }
     },
-        /**
+    /**
      * @param {IGradeModel} body
      * @returns {Promise < IGradeModel >}
      * @memberof GradeService

@@ -35,6 +35,7 @@ function AppRouter() {
           <PrivateRoute path={["/v1/professor/:id"]} exact component={ProfHomePage} />
           <PrivateRoute path={["/v1/professor/:id/:courseName"]} exact component={ProfCoursePage} />
           <PrivateRoute path={["/v1/student/:id/:courseName"]} exact component={StudentCoursePage} />
+
      </Router>
   );
 }

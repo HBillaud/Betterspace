@@ -23,6 +23,14 @@ export interface ICourseService {
     /**
      * @param {string} student_id
      * @param {string} course_id
+     * @returns {Promise<void>}
+     * @memberof ICourseService
+     */
+    getStudentGrades(student_id: string, course_id: string): Promise<{grade: Number, assignment: string, description: string, due_date: string}[]>;
+
+    /**
+     * @param {string} student_id
+     * @param {string} course_id
      * @return {Promise<ICourseModel>}
      * @memberof ICourseService
      */

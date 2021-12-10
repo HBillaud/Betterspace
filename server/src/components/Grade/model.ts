@@ -10,14 +10,8 @@ import internal from 'stream';
  */
  export interface IGradeModel extends Document {
     _id: Types.ObjectId;
-    student_id: {
-        type: Schema.Types.String,
-        ref: 'UserModel',
-    };
-    assignment_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'AssignmentModel',
-    };
+    student_id: String;
+    assignment_id: Types.ObjectId;
     grade: Number;
 }
 

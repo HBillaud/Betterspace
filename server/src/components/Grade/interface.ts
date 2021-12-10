@@ -6,11 +6,12 @@ import { Types } from 'mongoose';
  */
 export interface IGradeService {
     /**
-     * @param {string} id
+     * @param {Types.ObjectId} assignment_id
+     * @param {string} student_id
      * @returns {Promise<IGradeModel>}
      * @memberof IGradeService
      */
-    findOne(id: Types.ObjectId): Promise<IGradeModel>;
+    findOne(assignment_id: Types.ObjectId, student_id: string): Promise<IGradeModel>;
 
     /**
      * @param {IGradeModel} body
