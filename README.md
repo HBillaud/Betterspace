@@ -72,7 +72,6 @@ $ npm start
 complete guide [here](https://google.com)
 
 # authors
-- Jackson McCluskey @jacksonmccluskey
 - Hadrien Billaud @hbillaud
 - Julia Schneider @schne115
 - Quinten Gowdy @qhyltong

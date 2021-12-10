@@ -96,7 +96,13 @@ const CourseService: ICourseService = {
         try {
             const filter = {_id: course_id};
             const update = {$push: {students: student_id}};
-
+            const query: ICourseModel = await CourseModel.findOne({
+                _id: course_id
+            });
+            console.log(student_id, query.students);
+            if (student_id in query.students) {
+                throw new Error('This student is already enrolled');
+            }
             const course: ICourseModel = await CourseModel.findOneAndUpdate(filter, update);
 
             return course;

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { UserComponent, CourseComponent } from '../components';
+import { UserComponent, CourseComponent, GradeComponent } from '../components';
 
 /**
  * @constant {express.Router}
@@ -172,10 +172,15 @@ router.delete('/:id', UserComponent.remove);
  *              oneOf:
  *                - $ref: '#/components/schemas/GradeSchema'
  */
- //router.post('/:id/courses/:course_id/assignments/:assignment_id/grades', GradeComponent.add)
+ router.post('/:id/courses/:course_id/assignments/:assignment_id/grades', GradeComponent.add)
  
+ /* update the grades in a post request */
+ router.post('/:id/courses/:course_id/assignments/:assignment_id/grades/:grade_id', GradeComponent.update)
+ 
+ 
+ router.get('/:id/courses/:course_id/assignments/:assignment_id/grades/:grade_id', GradeComponent.findOne)
 
- 
+
 
  /**
  * @export {express.Router}

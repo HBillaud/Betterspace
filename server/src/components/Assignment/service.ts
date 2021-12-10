@@ -1,6 +1,7 @@
 import AssignmentModel, { IAssignmentModel } from './model';
 import { IAssignmentService } from './interface';
 import { Types } from 'mongoose';
+import CourseService from '../Course/service';
 
 /**
  * @export
@@ -35,7 +36,6 @@ const AssignmentService : IAssignmentService = {
                 due_date: body.due_date,
                 course: course_id,
             });
-
             return await assignment.save();
         } catch (error) {
             throw new Error(error.message);
