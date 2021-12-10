@@ -131,8 +131,53 @@ router.delete('/:id', UserComponent.remove);
  *                - $ref: '#/components/schemas/CourseSchema'
  */
  router.get('/:id/courses/:course_id', CourseComponent.findOne);
-
+ // route to get report 3 courses
+ router.post('/:id/courses', CourseComponent.courseReport)
 /**
+ * POST method route 
+ * @example http://localhost:PORT/v1/student/:id/courses/:course_id/assignments/:assignment_id/grades
+ * 
+ * @swagger
+ * /v1/student/{id}/courses/{course_id}/assignments/{assignment_id}/grades:
+ *  post:
+ *    description: Add grade
+ *    tags: ["grade"]
+ *    security:
+ *      - cookieAuth: []
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        description: the unique userId
+ *        required: true
+ *        schema:
+ *          type: string
+ *      - in: path
+ *        name: course_id
+ *        description: the unique course_id
+ *        required: true,
+ *        schema:
+ *           type: string
+ *      - in: path
+ *        name: assignment_id
+ *        description: the unique assignment_id
+ *        required: true,
+ *        schema:
+ *           type: string
+ *    responses:
+ *      200:
+ *        description: add grade
+ *        content:
+ *          application/json:
+ *            schema:
+ *              oneOf:
+ *                - $ref: '#/components/schemas/GradeSchema'
+ */
+ //router.post('/:id/courses/:course_id/assignments/:assignment_id/grades', GradeComponent.add)
+ 
+
+ 
+
+ /**
  * @export {express.Router}
  */
 export default router;

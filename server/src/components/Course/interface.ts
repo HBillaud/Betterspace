@@ -14,6 +14,13 @@ export interface ICourseService {
     findOne(id: string): Promise<ICourseModel>;
 
     /**
+     * @param {string[]} courses
+     * @param {string[]} profs
+     * @returns {Promise<ICourseModel[]>}
+     * @memberof ICourseService
+     */
+    findAll(courses: string[], profs: string[]): Promise<ICourseModel[]>;
+    /**
      * @param {ICourseModel} body
      * @returns {Promise<ICourseModel>}
      * @memberof ICourseService

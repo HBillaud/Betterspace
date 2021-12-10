@@ -25,6 +25,38 @@ const CourseService: ICourseService = {
         }
     },
 
+    /** 
+     * @returns {Promise <ICourseModel[]>}
+     * @memberof CourseService
+     */
+    async findAll(courses: string[], profs: string[]): Promise <ICourseModel[]> {
+        try {
+            let out: ICourseModel[] = [];
+            if (courses.length > 0 && profs.length > 0) {
+                out = await CourseModel.find({_id: {$in: courses}}).populate({
+                    path: 'professor',
+                    select: 'lastname',
+                    match:  {lastname: {"$in": profs}}
+                });
+            } else if (courses.length > 0 && profs.length == 0) {
+                out = await CourseModel.find({_id: {$in: courses}}).populate('professor','lastname');
+            } else if (courses.length == 0 && profs.length > 0) {
+                out = await CourseModel.find().populate(
+                {
+                    path: 'professor',
+                    select: 'lastname',
+                    match:  {lastname: {"$in": profs}}
+                });
+            } else {
+                out = await CourseModel.find().populate('professor','lastname');
+            }
+            //const out: ICourseModel[] = await CourseModel.find().populate('professor','lastname');
+            return out;
+        }
+        catch (error) {
+            throw new Error(error.message);
+        }
+    },
     /**
      * @param {ICourseModel} body
      * @returns {Promise < ICourseModel >}

@@ -54,3 +54,20 @@ export async function remove(req: Request, res: Response, next: NextFunction): P
         next(new HttpError(error.message.status, error.message));
     }
 }
+
+/**
+ * @export
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
+ * @returns {Promise < void >}
+ */
+ export async function courseReport(req: Request, res: Response, next: NextFunction): Promise < void > {
+    try {
+        const courses: ICourseModel[] = await CourseService.findAll(req.body.courses, req.body.profs);
+
+        res.status(200).json(courses);
+    } catch (error) {
+        next(new HttpError(error.message.status, error.message));
+    }
+}

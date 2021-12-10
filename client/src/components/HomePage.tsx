@@ -37,7 +37,10 @@ const HomePage = (props: any) => {
         {name ? name : "" }'s courses
     </h3>
     <div>
+    <button type="button" style={{justifyContent: 'center', alignItems: 'center', display: 'flex', margin: 'auto'}} >Add course</button>
+
 {courses.length < 1 ? <CircularProgress style={{justifyContent: 'center', alignItems: 'center', display: 'flex', margin: 'auto'}} /> : (
+
 <Grid  container alignItems="stretch" spacing={1} justifyContent="center" style={{ minHeight: '100vh' }}>
  {courses.map((course, index) => (
    <Grid key={index} item md={2}>
@@ -46,7 +49,7 @@ const HomePage = (props: any) => {
  ))}
 </Grid>
 )}
-    <button type="button" style={{justifyContent: 'center', alignItems: 'center', display: 'flex', margin: 'auto'}} >Add course</button></div>
+</div>
 
 </div>) :
 (<p>Loading...</p>)
