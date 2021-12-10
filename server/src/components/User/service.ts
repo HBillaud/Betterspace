@@ -52,15 +52,16 @@ const UserService: IUserService = {
             const query: IUserModel = await UserModel.findOne({
                 _id: id
             });
-            console.log(course_id, query.courses);
-            if (course_id in query.courses) {
-                throw new Error('This student is already enrolled');
+            for (let i = 0; i< query.courses.length; i++) {
+                if (query.courses[i].toString() == course_id) {
+                    throw new Error('This student is already enrolled');
+                }
             }
             const user: IUserModel = await UserModel.findOneAndUpdate(filter, update);
-
             return user;
+
         } catch (error) {
-            throw new Error(error.message);
+            throw new Error(error);
         }
     },
 

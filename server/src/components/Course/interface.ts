@@ -16,10 +16,11 @@ export interface ICourseService {
     /**
      * @param {string[]} courses
      * @param {string[]} profs
+     * @param {number} sortCourses
      * @returns {Promise<ICourseModel[]>}
      * @memberof ICourseService
      */
-    findAll(courses: string[], profs: string[]): Promise<ICourseModel[]>;
+    findAll(courses: string[], profs: string[], sortCourses: number): Promise<ICourseModel[]>;
     /**
      * @param {ICourseModel} body
      * @returns {Promise<ICourseModel>}
