@@ -35,6 +35,7 @@ const router: Router = Router();
  */
 router.get('/:id', UserComponent.get);
 
+router.get('/:id/reportCard', UserComponent.reportCard)
 /**
  * PUT method route 
  * @example http://localhost:PORT/v1/student/:id

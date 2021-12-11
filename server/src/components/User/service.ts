@@ -63,7 +63,33 @@ const UserService: IUserService = {
             throw new Error(error.message);
         }
     },
-
+    async reportCard(id: string): Promise<{course_id: number, pointsEarned: number, finalGrade: number}[]> {
+        try {
+            const user = await UserModel.findById(id).populate('courses');
+            const courses: any = user.courses;
+            const gradeInfo: {course_id: number, grades: any[]}[] = [];
+            for (let i = 0; i < courses.length; i++) {
+                const info = await CourseService.getStudentGrades(id,courses[i]._id);
+                gradeInfo.push({course_id: courses[i].id, grades: info})
+            }
+            const output: {course_id: number, pointsEarned: number, finalGrade: number}[] = [];
+            for (let i = 0; i < gradeInfo.length; i++) {
+                const id = gradeInfo[i].course_id;
+                let pointsPossible = 0;
+                let pointsEarned = 0;
+                for (let j = 0; j < gradeInfo[i].grades.length; j++) {
+                    pointsPossible += 100;
+                    pointsEarned += gradeInfo[i].grades[j].grade;
+                }
+                const finalGrade: number = (pointsEarned/pointsPossible) *100;
+                output.push({course_id: id, pointsEarned: pointsEarned, finalGrade: finalGrade})
+            }
+            return output;
+            
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    },
     /**
      * @param {string} course_id
      * @return {Promise<IUserModel>}
