@@ -1,6 +1,7 @@
 import * as connections from '../../config/connection/connection';
 import { Document, Types, Schema } from 'mongoose';
 import internal from 'stream';
+import { number } from 'joi';
 
 
 /**
@@ -12,7 +13,7 @@ import internal from 'stream';
     _id: Types.ObjectId;
     student_id: String;
     assignment_id: Types.ObjectId;
-    grade: Number;
+    grade: number;
 }
 
 
@@ -39,7 +40,7 @@ import internal from 'stream';
     },
     student_id: {type: Schema.Types.String, ref: 'UserModel', required: true},
     assignment_id: {type: Schema.Types.String, ref: 'AssignmentModel', required: true},
-    grade: { type: Number, required: true},
+    grade: { type: Schema.Types.Number, required: true},
 }, {
         collection: 'grades',
         versionKey: false

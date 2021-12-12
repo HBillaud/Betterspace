@@ -26,7 +26,8 @@ export interface ICourseService {
      * @returns {Promise<void>}
      * @memberof ICourseService
      */
-    getStudentGrades(student_id: string, course_id: string): Promise<{grade: Number, assignment: string, description: string, due_date: string}[]>;
+    getStudentGrades(student_id: string, course_id: string): Promise<{grade: number, assignment: string, description: string, due_date: string}[]>;
+    averageClassGrade(id: string): Promise<number>;
 
     /**
      * @param {string} student_id

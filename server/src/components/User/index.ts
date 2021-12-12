@@ -47,7 +47,7 @@ export async function remove(req: Request, res: Response, next: NextFunction): P
  */
 export async function reportCard(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-        const response = await UserService.reportCard(req.params.id);
+        const response = await UserService.reportCard(req.params.id, req.body);
         res.status(200).json(response);
     } catch (error) {
         next(new HttpError(error.message.status, error.message));

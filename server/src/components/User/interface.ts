@@ -29,14 +29,21 @@ export interface IUserService {
     enrollCourse(id: string, course_id: string): Promise<IUserModel>;
 
     /**
+     * @param {string} id 
+     * @param {string} course_id
+     * @return {Promise<{pointsEarned: number, finalGrade: number}>} 
+     */
+    finalGrade(id: string, course_id: string): Promise<{pointsEarned: number, finalGrade: number}>;
+
+    /**
      * @param {string} id
      * @return {Promise<void>}
      * @memberof IUserService
      */
-    reportCard(id: string): Promise<{course_id: number, pointsEarned: number, finalGrade: number}[]>;
+    reportCard(id: string, body: {avgFilter: number, gradefilter: number, sortCourses: number}): Promise<{course_id: number, pointsEarned: number, finalGrade: number, avgGrade: number}[]>;
 
     /**
-     * @param {string} id
+     * @param {string} idxw
      * @param {string} course_id
      * @return {Promise<IUserModel>}
      * @memberof IUserService

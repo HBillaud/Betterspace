@@ -25,7 +25,6 @@ const GradeService: IGradeService = {
             throw new Error(error.message);
         }
     },
-
     /**
      * @param {IGradeModel} body
      * @returns {Promise < IGradeModel >}

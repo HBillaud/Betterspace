@@ -63,28 +63,47 @@ const UserService: IUserService = {
             throw new Error(error.message);
         }
     },
-    async reportCard(id: string): Promise<{course_id: number, pointsEarned: number, finalGrade: number}[]> {
+    /**
+     * @param {string} id
+     * @param {string} course_id
+     * @return {Promise<{pointsEarned: number, finalGrade: number}>}
+     * @memberof IUserService
+     */
+    async finalGrade(id: string, course_id: string): Promise<{pointsEarned: number, finalGrade: number}> {
         try {
-            const user = await UserModel.findById(id).populate('courses');
+            const courseGrades = await CourseService.getStudentGrades(id, course_id);
+            let pointsPossible: number = 0;
+            let pointsEarned: number = 0;
+            for (let i = 0; i < courseGrades.length; i++) {
+                pointsPossible +=100;
+                pointsEarned += courseGrades[i].grade;
+            }
+            const finalGrade: number = (pointsEarned/pointsPossible) * 100;
+            return {pointsEarned: pointsEarned, finalGrade: finalGrade};
+        } catch(error) {
+            throw new Error(error.message);
+        }
+    },
+    /*
+    * @param {string} id
+    * @return {Promise<{course_id: number, pointsEarned: number, finalGrade: number}>}
+    * @memberof IUserService
+    */
+    async reportCard(id: string, body: {avgFilter: number, gradefilter: number, sortCourses: number}): Promise<{course_id: number, pointsEarned: number, finalGrade: number, avgGrade: number}[]> {
+        try {
+            const user = await UserModel.findById(id).populate({path: 'courses', options: { sort: { '_id': body.sortCourses } } });
             const courses: any = user.courses;
-            const gradeInfo: {course_id: number, grades: any[]}[] = [];
+            const gradeInfo: {course_id: number, pointsEarned: number, finalGrade: number, avgGrade: number}[] = [];
             for (let i = 0; i < courses.length; i++) {
-                const info = await CourseService.getStudentGrades(id,courses[i]._id);
-                gradeInfo.push({course_id: courses[i].id, grades: info})
-            }
-            const output: {course_id: number, pointsEarned: number, finalGrade: number}[] = [];
-            for (let i = 0; i < gradeInfo.length; i++) {
-                const id = gradeInfo[i].course_id;
-                let pointsPossible = 0;
-                let pointsEarned = 0;
-                for (let j = 0; j < gradeInfo[i].grades.length; j++) {
-                    pointsPossible += 100;
-                    pointsEarned += gradeInfo[i].grades[j].grade;
+                const avg = await CourseService.averageClassGrade(courses[i]._id);
+                const info = await UserService.finalGrade(id,courses[i]._id);
+                if (info.finalGrade > body.gradefilter || body.gradefilter == 0) {
+                    if ((body.avgFilter == 1 && avg < info.finalGrade) || body.avgFilter == 0 || (body.avgFilter == -1 && avg > info.finalGrade)) {
+                        gradeInfo.push({course_id: courses[i].id, pointsEarned: info.pointsEarned, finalGrade: info.finalGrade, avgGrade: avg })
+                    }
                 }
-                const finalGrade: number = (pointsEarned/pointsPossible) *100;
-                output.push({course_id: id, pointsEarned: pointsEarned, finalGrade: finalGrade})
             }
-            return output;
+            return gradeInfo;
             
         } catch (error) {
             throw new Error(error.message);

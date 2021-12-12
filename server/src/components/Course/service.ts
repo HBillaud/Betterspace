@@ -6,6 +6,7 @@ import { IProfessorModel } from '../Professor/model';
 import {Types} from 'mongoose';
 import { IGradeModel } from '../Grade/model';
 import GradeService from '../Grade/service';
+import UserService from '../User/service';
 
 /**
  * @export
@@ -79,13 +80,30 @@ const CourseService: ICourseService = {
             throw new Error(error.message);
         }
     },    
-   
-    async getStudentGrades(student_id: string, course_id: string): Promise<{grade: Number, assignment: string, description: string, due_date: string}[]> {
+    async averageClassGrade(id: string): Promise<number> {
+        try {
+            const students: any[] = await (await CourseModel.findById(id)).students;
+            let count = 0;
+            let totalGrades = 0;
+            for (let i = 0; i < students.length; i++) {
+                const grade: any = await UserService.finalGrade(students[i], id);
+                count++;
+                totalGrades += grade.finalGrade;
+            }
+            return totalGrades/count;
+
+        } catch (error) {
+            throw new Error (error.message);
+        }
+
+        return 0;
+    },
+    async getStudentGrades(student_id: string, course_id: string): Promise<{grade: number, assignment: string, description: string, due_date: string}[]> {
         try {
             const populatedCourse = await CourseModel.findById(course_id).populate('assignments');
             if (populatedCourse) {
                 const assignments: any = populatedCourse.assignments;
-                let grades: {grade: Number, assignment: string, description: string, due_date: string}[] = [];
+                let grades: {grade: number, assignment: string, description: string, due_date: string}[] = [];
                 for (let i = 0; i < assignments.length; i++) {
                     const grade: IGradeModel = await GradeService.findOne(assignments[i]._id, student_id);
                     if (grade) {
