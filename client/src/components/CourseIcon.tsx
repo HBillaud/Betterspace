@@ -11,9 +11,9 @@ const CourseIcon: FC<CourseIconProps> = ({courseName='unknown', id='unknown'}) =
 
 
   function handleClick(e:any) {
-    let path = `/v1/student/${id}/${courseName}`;
+    let path = `/v1/student/${id}/course/${courseName}`;
     if(sessionStorage.getItem('professor') === "true") {
-      path = `/v1/professor/${id}/${courseName}`;
+      path = `/v1/professor/${id}/course/${courseName}`;
     }
     history.push({
       pathname: path

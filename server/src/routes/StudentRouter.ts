@@ -131,7 +131,8 @@ router.delete('/:id', UserComponent.remove);
  *                - $ref: '#/components/schemas/CourseSchema'
  */
  router.get('/:id/courses/:course_id', CourseComponent.findOne);
-
+ // route to get report 3 courses
+ router.post('/:id/courses', CourseComponent.courseReport)
 /**
  * POST method route 
  * @example http://localhost:PORT/v1/student/:id/courses/:course_id/assignments/:assignment_id/grades
