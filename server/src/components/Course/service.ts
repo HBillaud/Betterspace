@@ -19,13 +19,15 @@ const CourseService: ICourseService = {
         try {
             return await CourseModel.findOne({
                 _id: id
-            });
+            }).populate(
+              'assignments'
+            );
         } catch (error) {
             throw new Error(error.message);
         }
     },
 
-    /** 
+    /**
      * @returns {Promise <ICourseModel[]>}
      * @memberof CourseService
      */
@@ -51,8 +53,8 @@ const CourseService: ICourseService = {
                 out = await CourseModel.find().populate('professor','lastname').sort({'_id': sortCourses});
             }
 
-            
-            
+
+
             //const out: ICourseModel[] = await CourseModel.find().populate('professor','lastname');
             return out;
         }
@@ -113,8 +115,8 @@ const CourseService: ICourseService = {
         } catch (error) {
             throw new Error(error.message);
         }
-    },    
-   
+    },
+
     /**
      * @param {string} student_id
      * @param {string} course_id
@@ -132,7 +134,7 @@ const CourseService: ICourseService = {
         } catch (error) {
             throw new Error(error.message);
         }
-    },    
+    },
 
     /**
      * @param {string} id
