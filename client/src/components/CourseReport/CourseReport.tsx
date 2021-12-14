@@ -19,10 +19,10 @@ const CourseReport = () => {
         var result = [];
         var options = e && e.target;
         var opt;
-      
+
         for (var i=0, iLen=options.length; i<iLen; i++) {
           opt = options[i];
-      
+
           if (opt.selected) {
             result.push(opt.value || opt.text);
           }
@@ -38,10 +38,10 @@ const CourseReport = () => {
         var result = [];
         var options = e && e.target;
         var opt;
-      
+
         for (var i=0, iLen=options.length; i<iLen; i++) {
           opt = options[i];
-      
+
           if (opt.selected) {
             result.push(opt.value || opt.text);
           }
@@ -128,5 +128,3 @@ const CourseReport = () => {
 }
 
 export default CourseReport;
-
-

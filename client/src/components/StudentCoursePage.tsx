@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import useStyles from './GridStyles';
+import StudentAssignmentPage from './StudentAssignmentPage';
 
 const StudentCoursePage = (props :any) => {
   const params: {id: string, courseName: string} = useParams();
 
   const [option, setOption] = useState("Information");
   const [description, setDescription] = useState("");
+  const [assignments, setAssignments] = useState([]);
 
   const buttonStyle = {
     color: "white",
@@ -24,6 +26,7 @@ const StudentCoursePage = (props :any) => {
         const response: any = await axios.get(process.env.REACT_APP_SERVER + `/v1/student/${params.id}/courses/${params.courseName}`, { withCredentials: true });
         if(response.status == 200) {
           setDescription(response.data.description);
+          setAssignments(response.data.assignments);
         }
       } catch(error: any) {
         console.log(error);
@@ -41,7 +44,7 @@ const StudentCoursePage = (props :any) => {
       )
     } else if(option === "Assignments") {
       return(
-        <div>Assignments</div>
+        <StudentAssignmentPage assignments={assignments} />
       )
     } else if(option === "Grades") {
       return(

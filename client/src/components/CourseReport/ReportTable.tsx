@@ -156,7 +156,7 @@ const ReportTable = (props: {courses: any, sortCourses: number, sortProfs: numbe
                   )
                 })}
               </tr>
- 
+
               </>
 
             )
