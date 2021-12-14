@@ -50,6 +50,7 @@ const ProfHomePage = (props: any) => {
         }) .then(function (response: any) {
           closeModal();
         }).catch((error) => {
+          alert("There was an issue creating this course. Make sure it doesn't exist already.");
           console.log(error);
         })
       }
