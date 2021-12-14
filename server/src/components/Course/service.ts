@@ -22,13 +22,15 @@ const CourseService: ICourseService = {
         try {
             return await CourseModel.findOne({
                 _id: id
-            });
+            }).populate(
+              'assignments'
+            );
         } catch (error) {
             throw new Error(error.message);
         }
     },
 
-    /** 
+    /**
      * @returns {Promise <ICourseModel[]>}
      * @memberof CourseService
      */
@@ -54,8 +56,8 @@ const CourseService: ICourseService = {
                 out = await CourseModel.find().populate('professor','lastname').sort({'_id': sortCourses});
             }
 
-            
-            
+
+
             //const out: ICourseModel[] = await CourseModel.find().populate('professor','lastname');
             return out;
         }
@@ -129,8 +131,6 @@ const CourseService: ICourseService = {
         } catch (error) {
             throw new Error (error.message);
         }
-
-        return 0;
     },
     async getStudentGrades(student_id: string, course_id: string): Promise<IGradeModel[]> { //{grade: number, assignment: string, description: string, due_date: string}[]> {
         try {
@@ -157,7 +157,7 @@ const CourseService: ICourseService = {
         } catch (error) {
             throw new Error(error.message);
         }
-    },    
+    },
 
     /**
      * @param {string} id
