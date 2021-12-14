@@ -21,7 +21,7 @@ export interface IGradeService {
      */
     findAllAssignments(student_id: string, course_id: string): Promise < IGradeModel []>;
     findClassGrades(course_id: string): Promise <IGradeModel>;
-    finalGrade(course_id: string, student_id: string): Promise <IGradeModel>;
+    finalGrade(course_id: string, student_id: string, gradefilter:number, avgfilter: number, avg: number): Promise <IGradeModel>;
     /**
      * @param {IGradeModel} body
      * @returns {Promise<IGradeModel>}

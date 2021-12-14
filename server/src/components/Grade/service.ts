@@ -4,6 +4,7 @@ import { IAssignmentModel } from '../Assignment/model';
 import ProfessorService from '../Professor/service';
 import { IProfessorModel } from '../Professor/model';
 import {Types} from 'mongoose';
+import { StringSchema } from 'joi';
 
 /**
  * @export
@@ -49,9 +50,6 @@ const GradeService: IGradeService = {
             },{
                 $group : {
                     _id : "$course_id",
-                    total : {
-                        $sum : "$grade"
-                    },
                     average :{
                         $avg: "$grade"
                     }
@@ -62,8 +60,9 @@ const GradeService: IGradeService = {
             throw new Error(error.message);
         }
     },
-    async finalGrade(course_id: string, student_id: string): Promise <IGradeModel> {
+    async finalGrade(course_id: string, student_id: string, gradefilter: number, avgfilter: number, avg: number): Promise <IGradeModel> {
         try {
+            if (avgfilter === -1) {
             const grades = await GradeModel.aggregate([{
                 $match : {$and: [{course_id: course_id}, {student_id: student_id}] }
             },{
@@ -76,8 +75,46 @@ const GradeService: IGradeService = {
                         $avg: "$grade"
                     }
                 }
+            }, {
+                $match: {$and: [{average: {$gt: gradefilter}}, {average: {$lt: avg}}]}
             }]);
             return grades[0];
+        } 
+        if (avgfilter === 1) {
+            const grades = await GradeModel.aggregate([{
+                $match : {$and: [{course_id: course_id}, {student_id: student_id}] }
+            },{
+                $group : {
+                    _id : "$course_id",
+                    total : {
+                        $sum : "$grade"
+                    },
+                    average :{
+                        $avg: "$grade"
+                    }
+                }
+            }, {
+                $match: {$and: [{average: {$gt: gradefilter}}, {average: {$gt: avg}}]}
+            }]);
+            return grades[0];
+        }
+        const grades = await GradeModel.aggregate([{
+            $match : {$and: [{course_id: course_id}, {student_id: student_id}] }
+        },{
+            $group : {
+                _id : "$course_id",
+                total : {
+                    $sum : "$grade"
+                },
+                average :{
+                    $avg: "$grade"
+                }
+            }
+        }, {
+            $match: {average: {$gt: gradefilter}}
+        }]);
+        return grades[0];
+            
         }catch (error) {
             throw new Error(error.message);
         }

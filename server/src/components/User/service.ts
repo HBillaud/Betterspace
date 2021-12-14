@@ -73,7 +73,7 @@ const UserService: IUserService = {
      */
     async finalGrade(id: string, course_id: string): Promise<{_id: string, total: number, average: number}> {
         try {
-            const grades: any = await GradeService.finalGrade(course_id, id);
+            const grades: any = await GradeService.finalGrade(course_id, id,0,0,0);
             return grades;
         } catch(error) {
             throw new Error(error.message);
@@ -91,14 +91,10 @@ const UserService: IUserService = {
             const gradeInfo: {course_id: number, pointsEarned: number, finalGrade: number, avgGrade: number}[] = [];
             for (let i = 0; i < courses.length; i++) {
                 const avg = await CourseService.averageClassGrade(courses[i]._id);
-                const info = await UserService.finalGrade(id,courses[i]._id);
+                const info: any = await GradeService.finalGrade(courses[i]._id,id,body.gradefilter, body.avgFilter, avg);
                 if (info) {
                     const finalGrade = info.average;
-                    if (!finalGrade || finalGrade > body.gradefilter || body.gradefilter == 0) {
-                        if (!avg || body.avgFilter == 0 || (body.avgFilter == 1 && avg < finalGrade) || (body.avgFilter == -1 && avg > finalGrade)) {
-                            gradeInfo.push({course_id: courses[i].id, pointsEarned: info.total, finalGrade: finalGrade, avgGrade: avg  })
-                        }
-                    }
+                    gradeInfo.push({course_id: courses[i].id, pointsEarned: info.total, finalGrade: finalGrade, avgGrade: avg  })
                 } else {
                     if (body.avgFilter == 0 && body.gradefilter == 0) {
                         gradeInfo.push({course_id: courses[i].id, pointsEarned: null, finalGrade: null, avgGrade: avg })
