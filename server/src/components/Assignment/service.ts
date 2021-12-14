@@ -1,6 +1,6 @@
 import AssignmentModel, { IAssignmentModel } from './model';
 import { IAssignmentService } from './interface';
-import { Types } from 'mongoose';
+import { Schema, Types } from 'mongoose';
 import CourseService from '../Course/service';
 
 /**
@@ -44,6 +44,22 @@ const AssignmentService : IAssignmentService = {
                 course: course_id,
             });
             return await assignment.save();
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    },
+
+    /**
+     * @param {string} course_id
+     * @return {Promise< IAssignmentModel[] >}
+     * @memberof AssignmentService
+     */
+    async findAllInCourse(course_id: string): Promise< IAssignmentModel[] > {
+        try {
+            const assignments: IAssignmentModel[] = await AssignmentModel.find({
+                course: course_id
+            });
+            return assignments;
         } catch (error) {
             throw new Error(error.message);
         }

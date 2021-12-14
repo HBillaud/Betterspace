@@ -20,4 +20,11 @@ export interface IAssignmentService {
      * @memberof IAssignmentService
      */
     add(body: IAssignmentModel, course_id: string): Promise<IAssignmentModel>;
+
+    /**
+     * @param {string} course_id
+     * @returns {Promise<IAssignmentModel}
+     * @memberof IAssignmentService
+     */
+     findAllInCourse(course_id: string): Promise<IAssignmentModel[]>;
 }
