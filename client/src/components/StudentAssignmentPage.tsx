@@ -4,6 +4,8 @@ import axios from 'axios';
 import useStyles from './GridStyles';
 import { useTable } from 'react-table';
 import styled from 'styled-components';
+import Moment from 'moment';
+
 const Styles = styled.div`
 padding: 1rem;
 
@@ -43,7 +45,11 @@ const StudentAssignmentPage = (props: {assignments: any}) => {
         },
         {
           Header: 'Due Date',
-          accessor: 'due_date',
+          accessor: (d: any) => {
+            return Moment(d.due_date)
+              .local()
+              .format("DD-MM-YYYY hh:mm:ss a")
+          },
         },
         {
           Header: 'Description',
