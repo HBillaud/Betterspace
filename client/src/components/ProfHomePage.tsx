@@ -28,11 +28,6 @@ const ProfHomePage = (props: any) => {
         setIsOpen(true);
       }
     
-      /* function afterOpenModal() {
-        // references are now sync'd and can be accessed.
-        subtitle.style.color = '#f00';
-      } */
-    
       function closeModal() {
         setIsOpen(false);
       }
@@ -49,6 +44,8 @@ const ProfHomePage = (props: any) => {
           professor: params.id,
         }) .then(function (response: any) {
           closeModal();
+          alert('Course successfully created!')
+          window.location.reload();
         }).catch((error) => {
           alert("There was an issue creating this course. Make sure it doesn't exist already.");
           console.log(error);
