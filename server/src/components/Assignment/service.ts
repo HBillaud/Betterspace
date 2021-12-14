@@ -20,7 +20,14 @@ const AssignmentService : IAssignmentService = {
             throw new Error(error.message);
         }
     },
-
+    async findAll(course_id: string): Promise < IAssignmentModel[]> {
+        try {
+            return await AssignmentModel.find({course_id: course_id});
+        }
+         catch (error) {
+             throw new Error(error.message);
+         }
+    },
     /**
      * @param {IAssignmentModel} body
      * @param {string} course_id

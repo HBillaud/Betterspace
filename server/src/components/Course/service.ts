@@ -119,15 +119,12 @@ const CourseService: ICourseService = {
     },    
     async averageClassGrade(id: string): Promise<number> {
         try {
-            const students: any[] = await (await CourseModel.findById(id)).students;
-            let count = 0;
-            let totalGrades = 0;
-            for (let i = 0; i < students.length; i++) {
-                const grade: any = await UserService.finalGrade(students[i], id);
-                count++;
-                totalGrades += grade.finalGrade;
+            const grades: any = await GradeService.findClassGrades(id);
+            if (grades) {
+                return grades.average;
+            } else {
+                return null;
             }
-            return totalGrades/count;
 
         } catch (error) {
             throw new Error (error.message);
@@ -135,24 +132,10 @@ const CourseService: ICourseService = {
 
         return 0;
     },
-    async getStudentGrades(student_id: string, course_id: string): Promise<{grade: number, assignment: string, description: string, due_date: string}[]> {
+    async getStudentGrades(student_id: string, course_id: string): Promise<IGradeModel[]> { //{grade: number, assignment: string, description: string, due_date: string}[]> {
         try {
-            const populatedCourse = await CourseModel.findById(course_id).populate('assignments');
-            if (populatedCourse) {
-                const assignments: any = populatedCourse.assignments;
-                let grades: {grade: number, assignment: string, description: string, due_date: string}[] = [];
-                for (let i = 0; i < assignments.length; i++) {
-                    const grade: IGradeModel = await GradeService.findOne(assignments[i]._id, student_id);
-                    if (grade) {
-                        grades.push({grade: grade.grade, assignment: assignments[i].title, description: assignments[i].description, due_date: assignments[i].due_date });
-                    } else {
-                        grades.push({grade: 0, assignment: assignments[i].title, description: assignments[i].description, due_date: assignments[i].due_date });
-                    }
-                }
-                return grades;
-            } else {
-                return;
-            }
+            const courseGrades = await GradeService.findAllAssignments(student_id, course_id);
+            return courseGrades;
         } catch (error) {
             throw new Error (error.message);
         }

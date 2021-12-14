@@ -1,4 +1,5 @@
 import { IAssignmentModel } from '../Assignment/model';
+import { IGradeModel } from '../Grade/model';
 import { ICourseModel } from './model';
 
 /**
@@ -34,7 +35,7 @@ export interface ICourseService {
      * @returns {Promise<void>}
      * @memberof ICourseService
      */
-    getStudentGrades(student_id: string, course_id: string): Promise<{grade: number, assignment: string, description: string, due_date: string}[]>;
+    getStudentGrades(student_id: string, course_id: string): Promise<IGradeModel[]>//{grade: number, assignment: string, description: string, due_date: string}[]>;
     averageClassGrade(id: string): Promise<number>;
 
     /**

@@ -13,6 +13,7 @@ import { number } from 'joi';
     _id: Types.ObjectId;
     student_id: String;
     assignment_id: Types.ObjectId;
+    course_id: String;
     grade: number;
 }
 
@@ -38,6 +39,7 @@ import { number } from 'joi';
         type: Types.ObjectId,
         unique: true
     },
+    course_id: {type: Schema.Types.String, ref: 'CourseModel', required: true},
     student_id: {type: Schema.Types.String, ref: 'UserModel', required: true},
     assignment_id: {type: Schema.Types.String, ref: 'AssignmentModel', required: true},
     grade: { type: Schema.Types.Number, required: true},

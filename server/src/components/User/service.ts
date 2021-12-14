@@ -2,6 +2,7 @@ import UserModel, { IUserModel } from './model';
 import { IUserService } from './interface';
 import { ICourseModel } from '../Course/model';
 import CourseService from '../Course/service';
+import GradeService from '../Grade/service';
 
 /**
  * @export
@@ -70,17 +71,10 @@ const UserService: IUserService = {
      * @return {Promise<{pointsEarned: number, finalGrade: number}>}
      * @memberof IUserService
      */
-    async finalGrade(id: string, course_id: string): Promise<{pointsEarned: number, finalGrade: number}> {
+    async finalGrade(id: string, course_id: string): Promise<{_id: string, total: number, average: number}> {
         try {
-            const courseGrades = await CourseService.getStudentGrades(id, course_id);
-            let pointsPossible: number = 0;
-            let pointsEarned: number = 0;
-            for (let i = 0; i < courseGrades.length; i++) {
-                pointsPossible +=100;
-                pointsEarned += courseGrades[i].grade;
-            }
-            const finalGrade: number = (pointsEarned/pointsPossible) * 100;
-            return {pointsEarned: pointsEarned, finalGrade: finalGrade};
+            const grades: any = await GradeService.finalGrade(course_id, id);
+            return grades;
         } catch(error) {
             throw new Error(error.message);
         }
@@ -98,11 +92,19 @@ const UserService: IUserService = {
             for (let i = 0; i < courses.length; i++) {
                 const avg = await CourseService.averageClassGrade(courses[i]._id);
                 const info = await UserService.finalGrade(id,courses[i]._id);
-                if (info.finalGrade > body.gradefilter || body.gradefilter == 0) {
-                    if ((body.avgFilter == 1 && avg < info.finalGrade) || body.avgFilter == 0 || (body.avgFilter == -1 && avg > info.finalGrade)) {
-                        gradeInfo.push({course_id: courses[i].id, pointsEarned: info.pointsEarned, finalGrade: info.finalGrade, avgGrade: avg })
+                if (info) {
+                    const finalGrade = info.average;
+                    if (!finalGrade || finalGrade > body.gradefilter || body.gradefilter == 0) {
+                        if (!avg || body.avgFilter == 0 || (body.avgFilter == 1 && avg < finalGrade) || (body.avgFilter == -1 && avg > finalGrade)) {
+                            gradeInfo.push({course_id: courses[i].id, pointsEarned: info.total, finalGrade: finalGrade, avgGrade: avg  })
+                        }
+                    }
+                } else {
+                    if (body.avgFilter == 0 && body.gradefilter == 0) {
+                        gradeInfo.push({course_id: courses[i].id, pointsEarned: null, finalGrade: null, avgGrade: avg })
                     }
                 }
+
             }
             return gradeInfo;
             

@@ -31,16 +31,16 @@ const GradeTable = (props: {grades: any}) => {
         () => [
           {
             Header: 'Assignment',
-            accessor: 'assignment', // accessor is the "key" in the data
+            accessor: 'assignment_id.title', // accessor is the "key" in the data
           },
           {
             Header: 'Description',
-            accessor: 'description',
+            accessor: 'assignment_id.description',
           },
           {
             Header: 'Due Date',
             accessor: (d: any) => {
-              return Moment(d.due_date)
+              return Moment(d.assignment_id.due_date)
                 .local()
                 .format("DD-MM-YYYY hh:mm:ss a")
             },

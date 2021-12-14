@@ -20,7 +20,11 @@ export async function findOne(req: Request, res: Response, next: NextFunction): 
         next(new HttpError(error.message.status, error.message));
     }
 }
+export async function findAll(req: Request, res: Response, next: Function): Promise < void > {
+    const assignments: IAssignmentModel[] = await AssignmentService.findAll(req.params.course_id);
 
+    res.status(200).json(assignments);
+}
 /**
  * @export
  * @param {Request} req

@@ -1,3 +1,4 @@
+import { LargeNumberLike } from 'node:crypto';
 import { ICourseModel } from '../Course/model';
 import { IUserModel } from './model';
 
@@ -33,7 +34,7 @@ export interface IUserService {
      * @param {string} course_id
      * @return {Promise<{pointsEarned: number, finalGrade: number}>} 
      */
-    finalGrade(id: string, course_id: string): Promise<{pointsEarned: number, finalGrade: number}>;
+    finalGrade(id: string, course_id: string): Promise<{_id: string, total: number, average: number}>;
 
     /**
      * @param {string} id

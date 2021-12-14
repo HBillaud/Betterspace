@@ -55,7 +55,7 @@ const ProfHomePage = (props: any) => {
  ))}
 </Grid>
 )}
-
+ 
 </div>) :
 (<p>Loading...</p>)
 }

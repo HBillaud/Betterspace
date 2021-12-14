@@ -26,21 +26,78 @@ const GradeService: IGradeService = {
         }
     },
     /**
+     * @param {string} id
+     * @returns {Promise < IGradeModel[] >}
+     * @memberof GradeService
+     */
+    async findAllAssignments(student_id: string, course_id: string): Promise < IGradeModel []> {
+        try {
+            const grades = await GradeModel.find({
+                student_id: student_id,
+                course_id: course_id,
+            }).populate('assignment_id');
+            return grades;
+            
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    },
+    async findClassGrades(course_id: string): Promise <IGradeModel> {
+        try {
+            const grades = await GradeModel.aggregate([{
+                $match : {course_id: course_id}
+            },{
+                $group : {
+                    _id : "$course_id",
+                    total : {
+                        $sum : "$grade"
+                    },
+                    average :{
+                        $avg: "$grade"
+                    }
+                }
+            }]);
+            return grades[0];
+        }catch (error) {
+            throw new Error(error.message);
+        }
+    },
+    async finalGrade(course_id: string, student_id: string): Promise <IGradeModel> {
+        try {
+            const grades = await GradeModel.aggregate([{
+                $match : {$and: [{course_id: course_id}, {student_id: student_id}] }
+            },{
+                $group : {
+                    _id : "$course_id",
+                    total : {
+                        $sum : "$grade"
+                    },
+                    average :{
+                        $avg: "$grade"
+                    }
+                }
+            }]);
+            return grades[0];
+        }catch (error) {
+            throw new Error(error.message);
+        }
+    },
+    /**
      * @param {IGradeModel} body
      * @returns {Promise < IGradeModel >}
      * @memberof GradeService
      */
-     async addGrade(student_id: string, assignment_id: string, body: {grade: number}): Promise < IGradeModel > {
+     async addGrade(student_id: string, assignment_id: string, course_id: string, body: {grade: number}): Promise < IGradeModel > {
         try {
             const grade: IGradeModel = new GradeModel({
                 _id: new Types.ObjectId(),
+                course_id: course_id, 
                 assignment_id: assignment_id,
                 student_id: student_id,
                 grade: body.grade
             });
 
             const saved: IGradeModel = await grade.save();
-
             return saved;
         } catch (error) {
             throw new Error(error.message);

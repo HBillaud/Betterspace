@@ -11,6 +11,7 @@ export interface IAssignmentService {
      * @memberof IAssignmentService
      */
     findOne(id: string): Promise<IAssignmentModel>;
+    findAll(course_id: string): Promise < IAssignmentModel[]>;
 
     /**
      * @param {IAssignmentModel} body

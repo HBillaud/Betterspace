@@ -30,13 +30,20 @@ export async function findOne(req: Request, res: Response, next: NextFunction): 
  */
  export async function add(req: Request, res: Response, next: NextFunction): Promise < void > {
     try {
-        const grade: IGradeModel = await GradeService.addGrade(req.params.id, req.params.assignment_id, req.body);
+        const grade: IGradeModel = await GradeService.addGrade(req.params.id, req.params.assignment_id, req.params.course_id, req.body);
         res.status(200).json(grade);
     } catch (error) {
         next(new HttpError(error.message.status, error.message));
     }
 }
-
+export async function findAllAssignments(req: Request, res: Response, next: NextFunction): Promise <void> {
+    try {
+        const grades: IGradeModel[] = await GradeService.findAllAssignments(req.params.id, req.params.course_id);
+        res.status(200).json(grades);
+    } catch (error) {
+        next(new HttpError(error.message.status, error.message));
+    }
+}
 /**
  * @export
  * @param {Request} req
