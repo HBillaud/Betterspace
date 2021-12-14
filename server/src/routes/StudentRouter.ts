@@ -133,6 +133,8 @@ router.delete('/:id', UserComponent.remove);
  */
  router.get('/:id/courses/:course_id', CourseComponent.findOne);
  router.get('/:id/courses/:course_id/grades', CourseComponent.getStudentGrades)
+ // route to get report 3 courses
+ router.post('/:id/courses', CourseComponent.courseReport)
 /**
  * POST method route 
  * @example http://localhost:PORT/v1/student/:id/courses/:course_id/assignments/:assignment_id/grades

@@ -3,10 +3,11 @@ import CourseIcon from './CourseIcon';
 import { Grid, CircularProgress } from '@material-ui/core';
 import useStyles from './GridStyles';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 
 const HomePage = (props: any) => {
+      const history = useHistory();
       const [name, setName] = useState('');
       const [courses, setCourses] = useState([]);
       const params: {id: string} = useParams();
@@ -37,7 +38,14 @@ const HomePage = (props: any) => {
         {name ? name : "" }'s courses
     </h3>
     <div>
+    <button type="button" style={{justifyContent: 'center', alignItems: 'center', display: 'flex', margin: 'auto'}} onClick={() => 
+                history.push({
+                  pathname: `/v1/student/${params.id}/courses`
+                })
+    }>Add course</button>
+
 {courses.length < 1 ? <CircularProgress style={{justifyContent: 'center', alignItems: 'center', display: 'flex', margin: 'auto'}} /> : (
+
 <Grid  container alignItems="stretch" spacing={1} justifyContent="center" style={{ minHeight: '100vh' }}>
  {courses.map((course, index) => (
    <Grid key={index} item md={2}>
@@ -46,7 +54,7 @@ const HomePage = (props: any) => {
  ))}
 </Grid>
 )}
-    <button type="button" style={{justifyContent: 'center', alignItems: 'center', display: 'flex', margin: 'auto'}} >Add course</button></div>
+</div>
 
 </div>) :
 (<p>Loading...</p>)

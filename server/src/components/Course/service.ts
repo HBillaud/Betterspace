@@ -28,6 +28,41 @@ const CourseService: ICourseService = {
         }
     },
 
+    /** 
+     * @returns {Promise <ICourseModel[]>}
+     * @memberof CourseService
+     */
+    async findAll(courses: string[], profs: string[], sortCourses: number): Promise <ICourseModel[]> {
+        try {
+            let out: any[] = [];
+            if (courses.length > 0 && profs.length > 0) {
+                out = await CourseModel.find({_id: {$in: courses}}).populate({
+                    path: 'professor',
+                    select: 'lastname',
+                    match:  {lastname: {"$in": profs}}
+                }).sort({'_id': sortCourses});
+            } else if (courses.length > 0 && profs.length == 0) {
+                out = await CourseModel.find({_id: {$in: courses}}).populate('professor','lastname').sort({'_id': sortCourses});
+            } else if (courses.length == 0 && profs.length > 0) {
+                out = await CourseModel.find().populate(
+                {
+                    path: 'professor',
+                    select: 'lastname',
+                    match:  {lastname: {"$in": profs}}
+                }).sort({'_id': sortCourses});
+            } else {
+                out = await CourseModel.find().populate('professor','lastname').sort({'_id': sortCourses});
+            }
+
+            
+            
+            //const out: ICourseModel[] = await CourseModel.find().populate('professor','lastname');
+            return out;
+        }
+        catch (error) {
+            throw new Error(error.message);
+        }
+    },
     /**
      * @param {ICourseModel} body
      * @returns {Promise < ICourseModel >}
@@ -70,8 +105,10 @@ const CourseService: ICourseService = {
             const query: ICourseModel = await CourseModel.findOne({
                 _id: course_id
             });
-            if (student_id in query.students) {
-                throw new Error('This student is already enrolled');
+            for (let i = 0; i< query.students.length; i++) {
+                if (query.students[i].toString() == student_id) {
+                    throw new Error('This student is already enrolled');
+                }
             }
             const course: ICourseModel = await CourseModel.findOneAndUpdate(filter, update);
 
