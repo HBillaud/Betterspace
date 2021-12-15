@@ -3,7 +3,7 @@ import { HttpError } from '../../config/error';
 import { ICourseModel } from './model';
 import { NextFunction, Request, Response } from 'express';
 import ProfessorService from '../Professor/service';
-
+import { db } from '../../config/connection/connection';
 /**
  * @export
  * @param {Request} req
@@ -29,11 +29,17 @@ export async function findOne(req: Request, res: Response, next: NextFunction): 
  * @returns {Promise < void >}
  */
  export async function add(req: Request, res: Response, next: NextFunction): Promise < void > {
+   const session = await db.startSession();
+   session.startTransaction();
     try {
         const course: ICourseModel = await CourseService.addCourse(req.body, req.params.id);
         await ProfessorService.addCourse(req.params.id, req.body._id);
+        await session.commitTransaction();
+        session.endSession();
         res.status(200).json(course);
     } catch (error) {
+        await session.abortTransaction();
+        session.endSession();
         next(new HttpError(error.message.status, error.message));
     }
 }
