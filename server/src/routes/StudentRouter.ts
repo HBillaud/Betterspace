@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { UserComponent, CourseComponent, GradeComponent } from '../components';
+import { UserComponent, CourseComponent, GradeComponent, AssignmentComponent } from '../components';
 
 /**
  * @constant {express.Router}
@@ -35,6 +35,7 @@ const router: Router = Router();
  */
 router.get('/:id', UserComponent.get);
 
+router.post('/:id/reportCard', UserComponent.reportCard)
 /**
  * PUT method route 
  * @example http://localhost:PORT/v1/student/:id
@@ -131,6 +132,7 @@ router.delete('/:id', UserComponent.remove);
  *                - $ref: '#/components/schemas/CourseSchema'
  */
  router.get('/:id/courses/:course_id', CourseComponent.findOne);
+ router.get('/:id/courses/:course_id/grades', CourseComponent.getStudentGrades)
  // route to get report 3 courses
  router.post('/:id/courses', CourseComponent.courseReport)
 /**
@@ -176,7 +178,7 @@ router.delete('/:id', UserComponent.remove);
  
  /* update the grades in a post request */
  router.post('/:id/courses/:course_id/assignments/:assignment_id/grades/:grade_id', GradeComponent.update)
- 
+ router.get('/:id/courses/:course_id/assignments', GradeComponent.findAllAssignments);
  
  router.get('/:id/courses/:course_id/assignments/:assignment_id/grades/:grade_id', GradeComponent.findOne)
 

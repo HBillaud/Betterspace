@@ -5,6 +5,16 @@ import useStyles from './GridStyles';
 import axios from 'axios';
 import { useParams, useHistory } from 'react-router-dom';
 
+const buttonStyle = {
+  color: "white",
+  background: "blue",
+  width: "20%",
+  padding: "1%",
+  margin: "15px",
+  cursor: "pointer",
+
+}
+
 
 const HomePage = (props: any) => {
       const history = useHistory();
@@ -45,7 +55,13 @@ const HomePage = (props: any) => {
     }>Add course</button>
 
 {courses.length < 1 ? <CircularProgress style={{justifyContent: 'center', alignItems: 'center', display: 'flex', margin: 'auto'}} /> : (
-
+  <>
+  <div style={{justifyContent: 'center', alignItems: 'center', display: 'flex', margin: 'auto'}}>
+  <button style={buttonStyle} onClick={() => 
+    history.push({
+      pathname: `/v1/student/${params.id}/reportCard`
+    })}>Current Report Card</button>
+  </div>
 <Grid  container alignItems="stretch" spacing={1} justifyContent="center" style={{ minHeight: '100vh' }}>
  {courses.map((course, index) => (
    <Grid key={index} item md={2}>
@@ -53,9 +69,10 @@ const HomePage = (props: any) => {
    </Grid>
  ))}
 </Grid>
+</>
 )}
-</div>
 
+</div>
 </div>) :
 (<p>Loading...</p>)
 }

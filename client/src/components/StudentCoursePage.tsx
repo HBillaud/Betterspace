@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import useStyles from './GridStyles';
+import GradeTable from './StudentGrades/GradeTable';
 import StudentAssignmentPage from './StudentAssignmentPage';
 
 const StudentCoursePage = (props :any) => {
   const params: {id: string, courseName: string} = useParams();
-
+  const [grades, setGrades] = useState<{grade: number, assignment: string, description: string, due_date: string}[]>([]);
   const [option, setOption] = useState("Information");
   const [description, setDescription] = useState("");
   const [assignments, setAssignments] = useState([]);
@@ -32,7 +33,19 @@ const StudentCoursePage = (props :any) => {
         console.log(error);
       }
     }
+    async function getGradeInfo() {
+      try {
+        const response: any = await axios.get(process.env.REACT_APP_SERVER + `/v1/student/${params.id}/courses/${params.courseName}/grades`, { withCredentials: true });
+        console.log(response);
+        if(response.status == 200) {
+          setGrades(response.data);
+        }
+      } catch (error: any) {
+        console.log(error);
+      }
+    }
     getCourseInfo();
+    getGradeInfo();
   }, [])
 
   const courseInfo = () => {
@@ -48,7 +61,11 @@ const StudentCoursePage = (props :any) => {
       )
     } else if(option === "Grades") {
       return(
-        <div>Grades</div>
+        <div><p style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>Grades</p>
+        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>       
+          <GradeTable  grades={grades}/>
+        </div>
+        </div>
       )
     }
   }

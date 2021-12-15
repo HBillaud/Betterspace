@@ -10,6 +10,7 @@ import { IUserModel } from '../User/model';
 import { IProfessorModel } from '../Professor/model';
 import {Types} from 'mongoose';
 
+
 /**
  * @export
  * @implements {ICourseModelService}
@@ -169,8 +170,28 @@ const CourseService: ICourseService = {
         } catch (error) {
             throw new Error(error.message);
         }
-    },
+    },    
+    async averageClassGrade(id: string): Promise<number> {
+        try {
+            const grades: any = await GradeService.findClassGrades(id);
+            if (grades) {
+                return grades.average;
+            } else {
+                return null;
+            }
 
+        } catch (error) {
+            throw new Error (error.message);
+        }
+    },
+    async getStudentGrades(student_id: string, course_id: string): Promise<IGradeModel[]> { //{grade: number, assignment: string, description: string, due_date: string}[]> {
+        try {
+            const courseGrades = await GradeService.findAllAssignments(student_id, course_id);
+            return courseGrades;
+        } catch (error) {
+            throw new Error (error.message);
+        }
+    },
     /**
      * @param {string} student_id
      * @param {string} course_id
