@@ -3,6 +3,7 @@ import { HttpError } from '../../config/error';
 import { IAssignmentModel } from './model';
 import { NextFunction, Request, Response } from 'express';
 import CourseService from '../Course/service';
+import { db } from '../../config/connection/connection';
 
 /**
  * @export
@@ -33,12 +34,17 @@ export async function findAll(req: Request, res: Response, next: Function): Prom
  * @returns {Promise < void >}
  */
  export async function addAssignment(req: Request, res: Response, next: NextFunction): Promise < void > {
+    const session = await db.startSession();
+    session.startTransaction();
     try {
         const assignment: IAssignmentModel = await AssignmentService.add(req.body, req.params.course_id);
         await CourseService.addAssignment(req.params.course_id, assignment);
-
+        await session.commitTransaction();
+        session.endSession();
         res.status(200).json(assignment);
     } catch (error) {
+        await session.abortTransaction();
+        session.endSession();
         next(new HttpError(error.message.status, error.message));
     }
 }
