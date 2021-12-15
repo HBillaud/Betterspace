@@ -89,8 +89,8 @@ const ProfHomePage = (props: any) => {
               <h3 style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 {name ? name : "" }'s courses
               </h3>
-              <div>
-              <button type="button" style={{justifyContent: 'center', alignItems: 'center', display: 'flex', margin: 'auto'}} onClick={openModal} >Create new course</button>
+              <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+              <button type="button" style={buttonStyle} onClick={openModal} >Create new course</button>
                 <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles} contentLabel="Example Modal">
                   <h2>Create a Course</h2>
                   <button onClick={closeModal}>close</button>
@@ -104,7 +104,7 @@ const ProfHomePage = (props: any) => {
                     <button type="submit">Submit</button>
                   </form>
                 </Modal>
-              <button type="button" style={{justifyContent: 'center', alignItems: 'center', display: 'flex', margin: 'auto'}} onClick={() => {
+              <button type="button" style={buttonStyle} onClick={() => {
                 history.push({
                   pathname: `/v1/professor/${params.id}/courses`
                 })

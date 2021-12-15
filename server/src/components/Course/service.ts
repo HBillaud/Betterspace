@@ -80,7 +80,6 @@ const CourseService: ICourseService = {
         } else {
           courseList = await CourseModel.find({professor: id}).populate(['students', 'assignments']);
         }
-
         const gradeInfo: {course_id: string, assignment: string, student: string, grade: number, averageGrade: number}[] = [];
 
         for(var i = 0; i < courseList.length; i++) {
@@ -109,7 +108,9 @@ const CourseService: ICourseService = {
             for(var k = 0; k < assignmentList.length; k++) {
               const grade = await GradeService.findOne(assignmentList[k]._id, studentList[j]._id);
               const avgGrade: any = await GradeService.getAssignmentAverage(assignmentList[k]._id.toString());
-              gradeInfo.push({course_id: current._id, assignment: assignmentList[k].title, student: studentList[j].firstname + " " + studentList[j].lastname, grade: grade.grade, averageGrade: avgGrade.average });
+              if (grade) {
+                gradeInfo.push({course_id: current._id, assignment: assignmentList[k].title, student: studentList[j].firstname + " " + studentList[j].lastname, grade: grade.grade, averageGrade: avgGrade.average });
+              }
             }
           }
         }
