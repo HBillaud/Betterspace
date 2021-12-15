@@ -42,7 +42,7 @@ const LogIn = () => {
       <label htmlFor="email">Email: </label>
       <input type="text" id="email" name="email"/><br/><br/>
       <label htmlFor="password">Password: </label>
-      <input type="text" id="password" name="password"/><br/><br/>
+      <input type="password" id="password" name="password"/><br/><br/>
       <input type="checkbox" id="teach" name="teach"/>
       <label htmlFor="teach">I am a professor.</label><br/><br/>
       <button type="submit">Submit</button>
