@@ -2,6 +2,7 @@ import UserModel, { IUserModel } from './model';
 import { IUserService } from './interface';
 import { ICourseModel } from '../Course/model';
 import CourseService from '../Course/service';
+import { db } from '../../config/connection/connection';
 
 /**
  * @export
@@ -45,6 +46,8 @@ const UserService: IUserService = {
      * @memberof IUserService
      */
     async enrollCourse(id: string, course_id: string): Promise<IUserModel> {
+        const session = await db.startSession();
+        session.startTransaction();
         try {
             const filter = {_id: id};
             const update = {$push: {courses: course_id}};
@@ -57,9 +60,13 @@ const UserService: IUserService = {
                 }
             }
             const user: IUserModel = await UserModel.findOneAndUpdate(filter, update);
+            await session.commitTransaction();
+            session.endSession();
             return user;
 
         } catch (error) {
+            await session.abortTransaction();
+            session.endSession();
             throw new Error(error);
         }
     },
