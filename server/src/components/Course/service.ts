@@ -9,7 +9,7 @@ import AssignmentService from '../Assignment/service';
 import { IUserModel } from '../User/model';
 import { IProfessorModel } from '../Professor/model';
 import {Types} from 'mongoose';
-
+import sanitize = require("mongo-sanitize")
 
 /**
  * @export
@@ -28,6 +28,7 @@ const CourseService: ICourseService = {
             }).populate(
               'assignments'
             );
+
         } catch (error) {
             throw new Error(error.message);
         }
@@ -41,27 +42,23 @@ const CourseService: ICourseService = {
         try {
             let out: any[] = [];
             if (courses.length > 0 && profs.length > 0) {
-                out = await CourseModel.find({_id: {$in: courses}}).populate({
+                out = await CourseModel.find({_id: {$in: sanitize(courses)}}).populate({
                     path: 'professor',
                     select: 'lastname',
-                    match:  {lastname: {"$in": profs}}
+                    match:  {lastname: {"$in": sanitize(profs)}}
                 }).sort({'_id': sortCourses});
             } else if (courses.length > 0 && profs.length == 0) {
-                out = await CourseModel.find({_id: {$in: courses}}).populate('professor','lastname').sort({'_id': sortCourses});
+                out = await CourseModel.find({_id: {$in: courses}}).populate('professor','lastname').sort({'_id': sanitize(sortCourses)});
             } else if (courses.length == 0 && profs.length > 0) {
                 out = await CourseModel.find().populate(
                 {
                     path: 'professor',
                     select: 'lastname',
-                    match:  {lastname: {"$in": profs}}
-                }).sort({'_id': sortCourses});
+                    match:  {lastname: {"$in": sanitize(profs)}}
+                }).sort({'_id': sanitize(sortCourses)});
             } else {
-                out = await CourseModel.find().populate('professor','lastname').sort({'_id': sortCourses});
+                out = await CourseModel.find().populate('professor','lastname').sort({'_id': sanitize(sortCourses)});
             }
-
-
-
-            //const out: ICourseModel[] = await CourseModel.find().populate('professor','lastname');
             return out;
         }
         catch (error) {
@@ -70,7 +67,7 @@ const CourseService: ICourseService = {
     },
     async findGradeReportOptions(id: any): Promise <ICourseModel[]> {
       let out: any[] = [];
-      out = await CourseModel.find({professor: id}).populate(['students', 'assignments']);
+      out = await CourseModel.find({professor: sanitize(id)}).populate(['students', 'assignments']);
       return out;
     },
 
@@ -79,7 +76,7 @@ const CourseService: ICourseService = {
         if(courses.length > 0) {
           courseList = await CourseModel.find({_id: {$in: courses}}).populate(['students', 'assignments']);
         } else {
-          courseList = await CourseModel.find({professor: id}).populate(['students', 'assignments']);
+          courseList = await CourseModel.find({professor: sanitize(id)}).populate(['students', 'assignments']);
         }
         const gradeInfo: {course_id: string, assignment: string, student: string, grade: number, averageGrade: number}[] = [];
 
