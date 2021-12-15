@@ -17,12 +17,6 @@ const ProfessorService: IProfessorService = {
      */
     async findOne(id: string): Promise < IProfessorModel > {
         try {
-            //example of how to get description of course id
-            // ProfessorModel.findOne({_id: id}).populate('courses', 'description')
-            // .exec().then((data) => {
-            //     console.log(data);
-            // })
-            
             return await ProfessorModel.findOne({
                 _id: id
             });

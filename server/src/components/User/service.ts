@@ -4,6 +4,7 @@ import { ICourseModel } from '../Course/model';
 import CourseService from '../Course/service';
 import GradeService from '../Grade/service';
 import { db } from '../../config/connection/connection';
+import sanitize = require("mongo-sanitize")
 
 /**
  * @export
@@ -92,7 +93,7 @@ const UserService: IUserService = {
     */
     async reportCard(id: string, body: {avgFilter: number, gradefilter: number, sortCourses: number}): Promise<{course_id: number, pointsEarned: number, finalGrade: number, avgGrade: number}[]> {
         try {
-            const user = await UserModel.findById(id).populate({path: 'courses', options: { sort: { '_id': body.sortCourses } } });
+            const user = await UserModel.findById(id).populate({path: 'courses', options: { sort: { '_id': sanitize(body.sortCourses) } } });
             const courses: any = user.courses;
             const gradeInfo: {course_id: number, pointsEarned: number, finalGrade: number, avgGrade: number}[] = [];
             for (let i = 0; i < courses.length; i++) {

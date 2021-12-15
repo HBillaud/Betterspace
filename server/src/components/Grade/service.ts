@@ -5,6 +5,7 @@ import ProfessorService from '../Professor/service';
 import { IProfessorModel } from '../Professor/model';
 import {Types} from 'mongoose';
 import { StringSchema } from 'joi';
+import sanitize = require("mongo-sanitize")
 
 /**
  * @export
@@ -62,7 +63,7 @@ const GradeService: IGradeService = {
                     }
                 }
             }, {
-                $match: {$and: [{average: {$gt: gradefilter}}, {average: {$lt: avg}}]}
+                $match: {$and: [{average: {$gt: sanitize(gradefilter)}}, {average: {$lt: sanitize(avg)}}]}
             }]);
             return grades[0];
         } 
@@ -80,7 +81,7 @@ const GradeService: IGradeService = {
                     }
                 }
             }, {
-                $match: {$and: [{average: {$gt: gradefilter}}, {average: {$gt: avg}}]}
+                $match: {$and: [{average: {$gt: sanitize(gradefilter)}}, {average: {$gt: sanitize(avg)}}]}
             }]);
             return grades[0];
         }
@@ -97,7 +98,7 @@ const GradeService: IGradeService = {
                 }
             }
         }, {
-            $match: {average: {$gt: gradefilter}}
+            $match: {average: {$gt: sanitize(gradefilter)}}
         }]);
         return grades[0];
             
@@ -147,7 +148,7 @@ const GradeService: IGradeService = {
                 course_id: course_id, 
                 assignment_id: assignment_id,
                 student_id: student_id,
-                grade: body.grade
+                grade: sanitize(body.grade)
             });
 
             const saved: IGradeModel = await grade.save();

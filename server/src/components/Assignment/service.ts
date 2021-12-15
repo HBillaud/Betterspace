@@ -2,6 +2,7 @@ import AssignmentModel, { IAssignmentModel } from './model';
 import { IAssignmentService } from './interface';
 import { Schema, Types } from 'mongoose';
 import CourseService from '../Course/service';
+import sanitize from 'mongo-sanitize';
 
 /**
  * @export
