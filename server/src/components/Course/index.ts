@@ -86,3 +86,37 @@ export async function remove(req: Request, res: Response, next: NextFunction): P
         next(new HttpError(error.message.status, error.message));
     }
 }
+
+/**
+ * @export
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
+ * @returns {Promise < void >}
+ */
+ export async function selectOptions(req: Request, res: Response, next: NextFunction): Promise < void > {
+    try {
+        const gradeReportInfo: ICourseModel[] = await CourseService.findGradeReportOptions(req.params.id);
+
+        res.status(200).json(gradeReportInfo);
+    } catch (error) {
+        next(new HttpError(error.message.status, error.message));
+    }
+}
+
+/**
+ * @export
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
+ * @returns {Promise < void >}
+ */
+ export async function gradeReport(req: Request, res: Response, next: NextFunction): Promise < void > {
+   try {
+     const response = await CourseService.findGradeReportInfo(req.params.id, req.body.courses, req.body.assignments, req.body.students);
+
+     res.status(200).json(response);
+   } catch(error) {
+     next(new HttpError(error.message.status, error.message));
+   }
+ }

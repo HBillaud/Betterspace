@@ -11,8 +11,8 @@ export interface IGradeService {
      * @returns {Promise<IGradeModel>}
      * @memberof IGradeService
      */
-    findOne(assignment_id: Types.ObjectId, student_id: string): Promise<IGradeModel>;
-    
+     findOne(assignment_id: string, student_id: string): Promise<IGradeModel>;
+
     /**
      * @param {string} course_id
      * @param {string} student_id
@@ -22,6 +22,7 @@ export interface IGradeService {
     findAllAssignments(student_id: string, course_id: string): Promise < IGradeModel []>;
     findClassGrades(course_id: string): Promise <IGradeModel>;
     finalGrade(course_id: string, student_id: string, gradefilter:number, avgfilter: number, avg: number): Promise <IGradeModel>;
+
     /**
      * @param {IGradeModel} body
      * @returns {Promise<IGradeModel>}
@@ -35,6 +36,9 @@ export interface IGradeService {
      * @memberof IGradeService
      */
     updateGrade(grade_id: Types.ObjectId, body: {grade: number}): Promise<IGradeModel>;
+
+    getAssignmentAverage(assignment_id: any): Promise <IGradeModel>;
+
 
     /**
      * @param {string} id

@@ -13,7 +13,7 @@ import {Types} from 'mongoose';
  */
 export async function findOne(req: Request, res: Response, next: NextFunction): Promise < void > {
     try {
-        const grade: IGradeModel = await GradeService.findOne(new Types.ObjectId(req.params.assignment_id), req.params.student_id);
+        const grade: IGradeModel = await GradeService.findOne(req.params.assignment_id, req.params.student_id);
 
         res.status(200).json(grade);
     } catch (error) {

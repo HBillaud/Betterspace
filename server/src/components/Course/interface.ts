@@ -22,6 +22,22 @@ export interface ICourseService {
      * @memberof ICourseService
      */
     findAll(courses: string[], profs: string[], sortCourses: number): Promise<ICourseModel[]>;
+
+    /**
+     * @param{string} id
+     */
+     findGradeReportOptions(id: string): Promise<ICourseModel[]>;
+
+     /**
+      * @param {string} id
+      * @param {string[]} courses
+      * @param {string[]} assignments
+      * @param {string[]} students
+      * @returns {Promise<void>}
+      * @memberof ICourseService
+      */
+     findGradeReportInfo(id: string, courses: string[], assignments: string[], students: string[]): Promise<{course_id: string, assignment: string, student: string, grade: number, averageGrade: number}[]>;
+
     /**
      * @param {ICourseModel} body
      * @returns {Promise<ICourseModel>}

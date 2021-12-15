@@ -12,7 +12,7 @@ import { number } from 'joi';
  export interface IGradeModel extends Document {
     _id: Types.ObjectId;
     student_id: String;
-    assignment_id: Types.ObjectId;
+    assignment_id: String;
     course_id: String;
     grade: number;
 }
@@ -47,20 +47,7 @@ import { number } from 'joi';
         collection: 'grades',
         versionKey: false
 });
-// var Student = require('mongoose').model('UserModel');
-// var Assignment = require('mongoose').model('AssignmentModel');
-// GradeSchema.statics.findByIds = function (student_id, assignment_id, callback) {
-//     var query = this.findOne()
-//     Student.findOne({'_id': student_id}, function (error: any, student: any) {
-//         Assignment.findOne({'_id': assignment_id}, function (error: any, assignment: any) {
-//             query.where(
-//                 {student_id: student._id, assignment: assignment._id}
-//             ).exec(callback);
-//         })
-//     })
-//     return query;
 
-// }
 export default connections.db.model < IGradeModel > ('GradeModel', GradeSchema);
 
 

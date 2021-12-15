@@ -9,6 +9,7 @@ import ProfCoursePage from './components/ProfCoursePage';
 import StudentCoursePage from './components/StudentCoursePage';
 import ReportCard from './components/ReportCard/ReportCard';
 import CourseReport from './components/CourseReport/CourseReport';
+import ProfessorGradeReport from './components/ProfessorGradeReport';
 
 function PrivateRoute({component, path}: any) {
     return (
@@ -42,6 +43,8 @@ function AppRouter() {
           <PrivateRoute path={["/v1/student/:id/course/:courseName"]} exact component={StudentCoursePage} />
           <PrivateRoute path={["/v1/student/:id/courses"]} exact component={CourseReport} />
           <PrivateRoute path={["/v1/professor/:id/courses"]} exact component={CourseReport} />
+          <PrivateRoute path={["/v1/professor/:id/grades"]} exact component={ProfessorGradeReport} />
+
 
      </Router>
   );

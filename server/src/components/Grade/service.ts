@@ -11,21 +11,7 @@ import { StringSchema } from 'joi';
  * @implements {IGradeModelService}
  */
 const GradeService: IGradeService = {
-    /**
-     * @param {string} id
-     * @returns {Promise < IGradeModel >}
-     * @memberof GradeService
-     */
-    async findOne(assignment_id: Types.ObjectId, student_id: string): Promise < IGradeModel > {
-        try {
-            return await GradeModel.findOne({
-                student_id: student_id,
-                assignment_id: assignment_id
-            });
-        } catch (error) {
-            throw new Error(error.message);
-        }
-    },
+
     /**
      * @param {string} id
      * @returns {Promise < IGradeModel[] >}
@@ -119,6 +105,36 @@ const GradeService: IGradeService = {
             throw new Error(error.message);
         }
     },
+     async findOne(assignment_id: string, student_id: string): Promise < IGradeModel > {
+         try {
+             return await GradeModel.findOne({
+                 assignment_id: assignment_id,
+                 student_id: student_id,
+             });
+         } catch (error) {
+             throw new Error(error.message);
+         }
+     },
+
+     async getAssignmentAverage(assignment_id: string): Promise <IGradeModel> {
+       try {
+         const grades = await GradeModel.aggregate([{
+           $match : {assignment_id: assignment_id}
+         }, {
+           $group : {
+             _id: "$assignment_id",
+             average: {
+               $avg: "$grade"
+             }
+           }
+         }
+       ]);
+       return grades[0];
+       } catch(error) {
+         throw new Error(error.message);
+       }
+     },
+
     /**
      * @param {IGradeModel} body
      * @returns {Promise < IGradeModel >}
@@ -149,7 +165,7 @@ const GradeService: IGradeService = {
             try {
                 const filter = { _id : grade_id };
                 const update = { grade: body.grade}
-    
+
                 return await GradeModel.findOneAndUpdate(filter, update);
             } catch (error) {
                 throw new Error(error.message);
@@ -172,7 +188,7 @@ const GradeService: IGradeService = {
         }
     },
 
- 
+
 };
 
 export default GradeService;
