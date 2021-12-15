@@ -4,6 +4,7 @@ import { IAssignmentModel } from '../Assignment/model';
 import ProfessorService from '../Professor/service';
 import { IProfessorModel } from '../Professor/model';
 import {Types} from 'mongoose';
+import { StringSchema } from 'joi';
 
 /**
  * @export
@@ -15,15 +16,35 @@ const GradeService: IGradeService = {
      * @returns {Promise < IGradeModel >}
      * @memberof GradeService
      */
-    async findOne(grade_id: Types.ObjectId): Promise < IGradeModel > {
-        try {
-            return await GradeModel.findOne({
-                _id: grade_id
-            });
-        } catch (error) {
-            throw new Error(error.message);
-        }
-    },
+     async findOne(assignment_id: string, student_id: string): Promise < IGradeModel > {
+         try {
+             return await GradeModel.findOne({
+                 assignment_id: assignment_id,
+                 student_id: student_id,
+             });
+         } catch (error) {
+             throw new Error(error.message);
+         }
+     },
+
+     async getAssignmentAverage(assignment_id: string): Promise <IGradeModel> {
+       try {
+         const grades = await GradeModel.aggregate([{
+           $match : {assignment_id: assignment_id}
+         }, {
+           $group : {
+             _id: "$assignment_id",
+             average: {
+               $avg: "$grade"
+             }
+           }
+         }
+       ]);
+       return grades[0];
+       } catch(error) {
+         throw new Error(error.message);
+       }
+     },
 
     /**
      * @param {IGradeModel} body
@@ -55,7 +76,7 @@ const GradeService: IGradeService = {
             try {
                 const filter = { _id : grade_id };
                 const update = { grade: body.grade}
-    
+
                 return await GradeModel.findOneAndUpdate(filter, update);
             } catch (error) {
                 throw new Error(error.message);
@@ -78,7 +99,7 @@ const GradeService: IGradeService = {
         }
     },
 
- 
+
 };
 
 export default GradeService;

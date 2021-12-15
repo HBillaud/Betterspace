@@ -30,6 +30,16 @@ const ProfHomePage = (props: any) => {
         getUserData();
 
       },[])
+
+      const buttonStyle = {
+        color: "white",
+        background: "blue",
+        width: "15%",
+        padding: "1%",
+        margin: "20px",
+        cursor: "pointer"
+      }
+
       return (
 
         <div>
@@ -38,13 +48,19 @@ const ProfHomePage = (props: any) => {
         <h3 style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
         {name ? name : "" }'s courses
     </h3>
-    <div>
-    <button type="button" style={{justifyContent: 'center', alignItems: 'center', display: 'flex', margin: 'auto'}} >Create new course</button>
-    <button type="button" style={{justifyContent: 'center', alignItems: 'center', display: 'flex', margin: 'auto'}} onClick={() => {
+    <div style={{justifyContent: 'center', alignItems: 'center', display: 'flex', margin: 'auto'}}>
+    <button type="button" style={buttonStyle} >Create new course</button>
+    <button type="button" style={buttonStyle} onClick={() => {
       history.push({
         pathname: `/v1/professor/${params.id}/courses`
       })
-    }}>View All Courses</button></div>
+    }}>View All Courses</button>
+    <button type="button" style={buttonStyle} onClick={() => {
+      history.push({
+        pathname: `/v1/professor/${params.id}/grades`
+      })
+    }}>View All Grades</button>
+    </div>
 
 {courses.length < 1 ? <CircularProgress style={{justifyContent: 'center', alignItems: 'center', display: 'flex', margin: 'auto'}} /> : (
 <Grid  container alignItems="stretch" spacing={1} justifyContent="center" style={{ minHeight: '100vh' }}>

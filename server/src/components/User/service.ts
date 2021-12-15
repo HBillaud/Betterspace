@@ -22,7 +22,6 @@ const UserService: IUserService = {
             throw new Error(error.message);
         }
     },
-
     /**
      * @param {string} id
      * @returns {Promise < IUserModel >}
@@ -84,7 +83,7 @@ const UserService: IUserService = {
     },
 
     /**
-     * @param {string} id 
+     * @param {string} id
      * @returns {Promise<ICourseModel[]>}
      * @memberof IUserService
      */

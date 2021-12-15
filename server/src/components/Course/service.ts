@@ -1,7 +1,12 @@
 import CourseModel, { ICourseModel } from './model';
 import { ICourseService } from './interface';
 import { IAssignmentModel } from '../Assignment/model';
+import { IGradeModel } from '../Grade/model';
 import ProfessorService from '../Professor/service';
+import UserService from '../User/service';
+import GradeService from '../Grade/service';
+import AssignmentService from '../Assignment/service';
+import { IUserModel } from '../User/model';
 import { IProfessorModel } from '../Professor/model';
 import {Types} from 'mongoose';
 
@@ -61,6 +66,54 @@ const CourseService: ICourseService = {
         catch (error) {
             throw new Error(error.message);
         }
+    },
+    async findGradeReportOptions(id: any): Promise <ICourseModel[]> {
+      let out: any[] = [];
+      out = await CourseModel.find({professor: id}).populate(['students', 'assignments']);
+      return out;
+    },
+
+    async findGradeReportInfo(id: any, courses: string[], assignments: string[], students: string[]): Promise<{course_id: string, assignment: string, student: string, grade: number, averageGrade: number}[]> {
+        let courseList: any[] = [];
+        if(courses.length > 0) {
+          courseList = await CourseModel.find({_id: {$in: courses}}).populate(['students', 'assignments']);
+        } else {
+          courseList = await CourseModel.find({professor: id}).populate(['students', 'assignments']);
+        }
+
+        const gradeInfo: {course_id: string, assignment: string, student: string, grade: number, averageGrade: number}[] = [];
+
+        for(var i = 0; i < courseList.length; i++) {
+          const current = courseList[i];
+          let assignmentList = current.assignments;
+          if(assignments.length > 0) {
+            let tempList = [];
+            for(var l = 0; l < assignmentList.length; l++) {
+              if(assignments.includes(assignmentList[l].title)) {
+                tempList.push(assignmentList[l]);
+              }
+            }
+            assignmentList = tempList;
+          }
+          let studentList = current.students;
+          if(students.length > 0) {
+            let tempList = [];
+            for(var l = 0; l < studentList.length; l++) {
+              if(students.includes(studentList[l].lastname)) {
+                tempList.push(studentList[l]);
+              }
+            }
+            studentList = tempList;
+          }
+          for(var j = 0; j < studentList.length; j++) {
+            for(var k = 0; k < assignmentList.length; k++) {
+              const grade = await GradeService.findOne(assignmentList[k]._id, studentList[j]._id);
+              const avgGrade: any = await GradeService.getAssignmentAverage(assignmentList[k]._id.toString());
+              gradeInfo.push({course_id: current._id, assignment: assignmentList[k].title, student: studentList[j].firstname + " " + studentList[j].lastname, grade: grade.grade, averageGrade: avgGrade.average });
+            }
+          }
+        }
+        return gradeInfo;
     },
     /**
      * @param {ICourseModel} body

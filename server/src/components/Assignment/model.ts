@@ -13,7 +13,7 @@ export interface IAssignmentModel extends Document {
     due_date: string;
     course: {type: Schema.Types.String, ref: 'CourseModel'};
 }
- 
+
 
 /**
  * @swagger

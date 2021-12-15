@@ -7,9 +7,9 @@ import { AssignmentComponent, CourseComponent, ProfessorComponent } from '../com
 const router: Router = Router();
 
 /**
- * GET method route 
+ * GET method route
  * @example http://localhost:PORT/v1/profesor/:id
- * 
+ *
  * @swagger
  * /v1/professor/{id}:
  *  get:
@@ -36,9 +36,49 @@ const router: Router = Router();
 router.get('/:id', ProfessorComponent.findOne);
 
 /**
+ * GET method route
+ * @example http://localhost:PORT/v1/professor/:id/courses/:course_id
+ *
+ * @swagger
+ * /v1/professor/{id}/courses/{course_id}:
+ *  get:
+ *    description: Get course by course_id
+ *    tags: ["courses"]
+ *    security:
+ *      - cookieAuth: []
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        description: the unique userId
+ *        required: true
+ *        schema:
+ *          type: string
+ *      - in: path
+ *        name: course_id
+ *        description: the unique course_id
+ *        required: true,
+ *        schema:
+ *           type: string
+ *    responses:
+ *      200:
+ *        description: return course by course_id
+ *        content:
+ *          application/json:
+ *            schema:
+ *              oneOf:
+ *                - $ref: '#/components/schemas/CourseSchema'
+ */
+ router.get('/:id/courses/:course_id', CourseComponent.findOne);
+ // route to get report 1 selections
+ router.get('/:id/courses', CourseComponent.selectOptions);
+ // route to get report 1 grade info
+ router.post('/:id/courses', CourseComponent.gradeReport);
+
+
+/**
  * POST method route
  * @example http://localhost:PORT/v1/professor/:id
- * 
+ *
  * @swagger
  * /v1/professor/:id:
  *  post:
@@ -79,7 +119,7 @@ router.post('/:id', CourseComponent.add);
 /**
  * POST method route
  * @example http://localhost:PORT/v1/professor/:id/courses/:course_id/assignments
- * 
+ *
  * @swagger
  * /v1/professor/:id/courses/:course_id/assignments :
  *  post:
