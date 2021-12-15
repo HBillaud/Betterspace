@@ -9,16 +9,11 @@ import internal from 'stream';
  * @extends {Document}
  */
  export interface IGradeModel extends Document {
-    _id: Types.ObjectId;
-    student_id: {
-        type: Schema.Types.String,
-        ref: 'UserModel',
-    };
-    assignment_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'AssignmentModel',
-    };
-    grade: Number;
+   _id: Types.ObjectId;
+   student_id: String;
+   assignment_id: String;
+   course_id: String;
+   grade: number;
 }
 
 
@@ -36,7 +31,7 @@ import internal from 'stream';
  *          type: string
  *        grade:
  *          type: number
- *    
+ *
  */
  const GradeSchema: Schema = new Schema({
     _id: {
@@ -65,5 +60,3 @@ import internal from 'stream';
 
 // }
 export default connections.db.model < IGradeModel > ('GradeModel', GradeSchema);
-
-

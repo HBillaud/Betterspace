@@ -14,7 +14,7 @@ export interface IAssignmentModel extends Document {
     course: string
     // course: {type: Schema.Types.String, ref: 'CourseModel'};
 }
- 
+
 
 /**
  * @swagger

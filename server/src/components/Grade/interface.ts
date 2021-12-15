@@ -10,8 +10,7 @@ export interface IGradeService {
      * @returns {Promise<IGradeModel>}
      * @memberof IGradeService
      */
-    findOne(id: Types.ObjectId): Promise<IGradeModel>;
-
+    findOne(assignment_id: string, student_id: string): Promise<IGradeModel>;
     /**
      * @param {IGradeModel} body
      * @returns {Promise<IGradeModel>}
@@ -25,6 +24,9 @@ export interface IGradeService {
      * @memberof IGradeService
      */
     updateGrade(grade_id: Types.ObjectId, body: {grade: number}): Promise<IGradeModel>;
+
+    getAssignmentAverage(assignment_id: any): Promise <IGradeModel>;
+
 
     /**
      * @param {string} id
