@@ -5,6 +5,8 @@ import axios from 'axios';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Select from 'react-select';
+let optionsAssignment: any[] = [];
+let optionsStudent: any[] = [];
 
 const ProfCoursePage = (props :any) => {
 
@@ -14,14 +16,13 @@ const ProfCoursePage = (props :any) => {
   const [assignments, setAssignments] = useState<string[]>();
   const [students, setStudents] = useState<string[]>();
   const [startDate, setStartDate] = useState<Date | null>(new Date());
-  let optionsAssignment: any[];
-  let optionsStudent: any[];
+
   
   async function setSelectAssignmentOptions() {
     if (assignments) {
-      assignments.forEach(assignment => {
+      assignments.forEach((assignment: any) => {
         optionsAssignment.push({
-          value: assignment, label: assignment
+          value: assignment.title, label: assignment.title
         })
       });
     }
@@ -83,15 +84,17 @@ const ProfCoursePage = (props :any) => {
 
   const courseInfo = () => {
     if(option === "update") {
-      return(
-        <div style={{margin: "25px", display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+      return(<>             
+
+        {(optionsAssignment.length > 0  && optionsStudent.length > 0) ?  <div style={{margin: "25px", display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+
           <form onSubmit={handleGradeSubmit}>
             <Select options={optionsAssignment}/><br/>
             <Select options={optionsStudent}/><br/>
             <input type="number" id="grade" placeholder="Input Grade"/><br/><br/>
             <button type="submit">Submit</button>
           </form>
-        </div>
+        </div> : <p>Loading..</p>}</>
       )
     } else if(option === "add") {
       return(
@@ -123,14 +126,14 @@ const ProfCoursePage = (props :any) => {
           setDescription(response.data.description);
           setAssignments(response.data.assignments);
           setStudents(response.data.students);
-          setSelectAssignmentOptions();
-          setSelectStudentOptions();
         }
       } catch(error: any) {
         console.log(error);
       }
     }
     getCourseInfo();
+    setSelectAssignmentOptions();
+    setSelectStudentOptions();
   }, [])
 
   const buttonStyle = {
@@ -143,10 +146,15 @@ const ProfCoursePage = (props :any) => {
 }
 
 function updateClick(e:any) {
+  optionsAssignment = [];
+  optionsStudent = [];
+  setSelectAssignmentOptions();
+  setSelectStudentOptions();
   setOption("update");
 }
 
 function addClick(e:any) {
+
   setOption("add");
 }
 
